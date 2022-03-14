@@ -24,4 +24,5 @@ public class Account extends BaseEntity implements Serializable {
     String userName;
     String profileImageUrl;
     String accessToken;
+    Integer kakaoId;
 }
