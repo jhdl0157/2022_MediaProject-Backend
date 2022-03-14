@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class KakaoResponse {
 
-    private Integer id;
+    private Long id;
     private String connected_at;
     private Properties properties;
     private KakaoAccount kakao_account;

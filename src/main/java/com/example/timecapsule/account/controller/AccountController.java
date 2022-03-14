@@ -1,6 +1,7 @@
 package com.example.timecapsule.account.controller;
 
 
+import com.example.timecapsule.account.dto.response.MyAccountResponse;
 import com.example.timecapsule.account.service.AuthService;
 import com.example.timecapsule.main.common.SingleResult;
 import com.example.timecapsule.main.common.service.ResponseService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/account")
+@CrossOrigin(value = {"*"}, maxAge = 6000)
 public class AccountController {
     private final ResponseService responseService;
     private final AuthService authService;
@@ -23,8 +25,9 @@ public class AccountController {
     }
     @GetMapping("/login")
     public ResponseEntity<SingleResult<MyAccountResponse>> getTokenAndJoinOrLogin(
-            @RequestHeader("Authorization") String accessToken) {
-        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(accessToken)), HttpStatus.CREATED);
+            @RequestParam("code") String code) {
+        log.info(code);
+        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(code)), HttpStatus.CREATED);
     }
 
 }
