@@ -25,6 +25,7 @@ public class CapsuleRequest {
         capsule.setDuration(currentDate.plusDays(duration));
         capsule.setIsOpened(false);
         capsule.setLocation(capsule.setLocationFunc(latitude,longitude));
+        capsule.setSender(account.getKakaoId());
         return capsule;
     }
 }

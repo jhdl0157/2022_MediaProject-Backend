@@ -23,18 +23,19 @@ import java.time.LocalDateTime;
 public class Capsule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long capsuleId;
-    private String capsuleTitle;
-    private String capsuleContent;
-    private Boolean isOpened;
-    private Long recipient;
-    private LocalDateTime duration;
-    private Point2D.Double location;
+     Long capsuleId;
+     String capsuleTitle;
+     String capsuleContent;
+     Boolean isOpened;
+     Long recipient;
+     LocalDateTime duration;
+     Point2D.Double location;
+     Long sender;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "account_id")
-    private Account account;
+    public Account account;
 
     public void addAccount(Account updateAccount) {
         this.setAccount(updateAccount);

@@ -59,4 +59,11 @@ public class CapsuleService {
         }
         return capsuleResponseList;
     }
+
+    public void deleteCapsule(Long capsuleId,String accessToken) {
+        Capsule nowCapsule=capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
+        Account nowUser=accountService.findAccountByAccessToken(accessToken);
+        if(nowCapsule.getRecipient().equals(nowUser.getKakaoId()))
+             capsuleRepository.deleteById(capsuleId);
+    }
 }
