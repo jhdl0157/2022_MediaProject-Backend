@@ -16,7 +16,7 @@ public class SendCapsuleResponse {
     Long capsuleId;
     String title;
     String content;
-    Long kakaoId;
+    Long recipient;
     LocalDateTime duration;
     Point2D.Double location;
 
@@ -25,7 +25,7 @@ public class SendCapsuleResponse {
                 .capsuleId(capsule.getCapsuleId())
                 .title(capsule.getCapsuleTitle())
                 .content(capsule.getCapsuleContent())
-                .kakaoId(capsule.getKakaoId())
+                .recipient(capsule.getRecipient())
                 .duration(capsule.getDuration())
                 .location(capsule.getLocation())
                 .build();

@@ -27,7 +27,7 @@ public class Capsule extends BaseEntity {
     private String capsuleTitle;
     private String capsuleContent;
     private Boolean isOpened;
-    private Long kakaoId;
+    private Long recipient;
     private LocalDateTime duration;
     private Point2D.Double location;
 

@@ -22,6 +22,7 @@ public class CapsuleController {
     private final CapsuleService capsuleService;
     private final ResponseService responseService;
 
+    //캡슐 등록
     @PostMapping
     public ResponseEntity<SingleResult<SendCapsuleResponse>> postCapsule(
             @RequestHeader("Authorization") String accessToken,
@@ -31,8 +32,16 @@ public class CapsuleController {
         SendCapsuleResponse capsule=capsuleService.createCapsule(splitToken[1],capsuleRequest);
         return new ResponseEntity<>(responseService.getSingleResult(capsule), HttpStatus.CREATED);
     }
+
+    //랜덤 닉네임 생성요청
     @GetMapping("/nickname")
     public ResponseEntity<ListResult<String>> getNicknmae() {
     return new ResponseEntity<>(responseService.getListResult(capsuleService.getRandomNickname()),HttpStatus.OK);
+    }
+
+
+    @GetMapping("detail/{capsule_id}")
+    public ResponseEntity<SingleResult<Capsule>> getMyCapsule(@PathVariable Long capsule_id){
+        return new ResponseEntity<>(responseService.getSingleResult(capsuleService.getDetailCapsule(capsule_id)),HttpStatus.OK);
     }
 }
