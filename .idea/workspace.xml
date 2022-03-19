@@ -7,7 +7,7 @@
     <list default="true" id="78543b6c-8dda-4916-9514-01bfa7a03fae" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/controller/CapsuleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/controller/CapsuleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/dto/response/SendCapsuleResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/dto/response/CapsuleResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/repository/CapsuleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/repository/CapsuleRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/service/CapsuleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/timecapsule/capsule/service/CapsuleService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -158,7 +158,7 @@
       <workItem from="1647511336927" duration="3992000" />
       <workItem from="1647587267277" duration="1050000" />
       <workItem from="1647589341696" duration="247000" />
-      <workItem from="1647681875099" duration="6660000" />
+      <workItem from="1647681875099" duration="7469000" />
     </task>
     <servers />
   </component>

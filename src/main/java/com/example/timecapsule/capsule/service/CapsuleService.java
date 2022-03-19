@@ -47,4 +47,15 @@ public class CapsuleService {
         capsuleRepository.save(capsule);
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
+
+    public List<Capsule> getListCapsule(String accessToken) {
+        Account account=accountService.findAccountByAccessToken(accessToken);
+        Long kakaoId=account.getKakaoId();
+        CapsuleResponse capsuleResponse=new CapsuleResponse();
+        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(kakaoId);
+        for(int i=0;i<listcapsule.size();i++){
+            capsuleResponse
+        }
+        return listcapsule;
+    }
 }

@@ -44,4 +44,13 @@ public class CapsuleController {
     public ResponseEntity<SingleResult<CapsuleResponse>> getMyCapsule(@PathVariable Long capsule_id){
         return new ResponseEntity<>(responseService.getSingleResult(capsuleService.getDetailCapsule(capsule_id)),HttpStatus.OK);
     }
+    //현재 사용자가 받은 캡슐 불러오기
+    @GetMapping("/main")
+    public ResponseEntity<ListResult<CapsuleResponse>> getMyCapsule(
+            @RequestHeader("Authorization") String accessToken
+    ){
+        String[] splitToken = accessToken.split(" ");
+        return new ResponseEntity<>(responseService.getListResult( capsuleService.getListCapsule(splitToken[1])),HttpStatus.OK);
+    }
+
 }
