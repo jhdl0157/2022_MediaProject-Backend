@@ -54,8 +54,8 @@ public class CapsuleService {
         Long kakaoId=account.getKakaoId();
         List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
         List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(kakaoId);
-        for(int i=0;i<listcapsule.size();i++){
-            capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(listcapsule.get(i)));
+        for (Capsule capsule : listcapsule) {
+            capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(capsule));
         }
         return capsuleResponseList;
     }
