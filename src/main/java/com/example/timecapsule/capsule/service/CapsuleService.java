@@ -4,7 +4,7 @@ import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.account.service.AccountService;
 import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
-import com.example.timecapsule.capsule.dto.response.SendCapsuleResponse;
+import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
 import com.example.timecapsule.exception.NotFoundException;
@@ -25,12 +25,12 @@ import java.util.List;
 public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final AccountService accountService;
-    public SendCapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
+    public CapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
         LocalDateTime currentDate = LocalDateTime.now();
         Account account = accountService.findAccountByAccessToken(accessToken);
         Capsule capsule=capsuleRequest.toCapsule(account,currentDate);
         capsuleRepository.save(capsule);
-        return SendCapsuleResponse.toSendResponse(capsule);
+        return CapsuleResponse.toSendResponse(capsule);
     }
     public List<String> getRandomNickname(){
         RestTemplate restTemplate = new RestTemplate();
