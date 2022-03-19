@@ -30,7 +30,7 @@ public class Capsule extends BaseEntity {
      Long recipient;
      LocalDateTime duration;
      Point2D.Double location;
-     Long sender;
+     Long senderId;
 
     @JsonIgnore
     @ManyToOne
