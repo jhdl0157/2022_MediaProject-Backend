@@ -35,6 +35,7 @@ public class CapsuleService {
         capsuleRepository.save(capsule);
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
+    
     public List<String> getRandomNickname(){
         RestTemplate restTemplate = new RestTemplate();
         String fooResourceUrl= "https://bloodgang.shop/api/nickname?count=4";
