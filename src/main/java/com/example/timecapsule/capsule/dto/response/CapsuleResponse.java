@@ -1,27 +1,28 @@
 package com.example.timecapsule.capsule.dto.response;
 
-import com.example.timecapsule.account.dto.response.MyAccountResponse;
-import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.capsule.entity.Capsule;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.time.LocalDateTime;
 
-@Builder
+
 @Data
-public class SendCapsuleResponse {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CapsuleResponse {
     Long capsuleId;
     String title;
     String content;
     Long recipient;
     LocalDateTime duration;
     Point2D.Double location;
-
-    public static SendCapsuleResponse toSendResponse(Capsule capsule) {
-        return SendCapsuleResponse.builder()
+    public static CapsuleResponse toCapsuleResponse(Capsule capsule) {
+        return CapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
                 .title(capsule.getCapsuleTitle())
                 .content(capsule.getCapsuleContent())

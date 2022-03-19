@@ -4,7 +4,7 @@ import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.account.service.AccountService;
 import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
-import com.example.timecapsule.capsule.dto.response.SendCapsuleResponse;
+import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
 import com.example.timecapsule.exception.NotFoundException;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,12 +26,12 @@ import java.util.List;
 public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final AccountService accountService;
-    public SendCapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
+    public CapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
         LocalDateTime currentDate = LocalDateTime.now();
         Account account = accountService.findAccountByAccessToken(accessToken);
         Capsule capsule=capsuleRequest.toCapsule(account,currentDate);
         capsuleRepository.save(capsule);
-        return SendCapsuleResponse.toSendResponse(capsule);
+        return CapsuleResponse.toCapsuleResponse(capsule);
     }
     public List<String> getRandomNickname(){
         RestTemplate restTemplate = new RestTemplate();
@@ -40,10 +41,22 @@ public class CapsuleService {
         return responseEntity.getBody().getWord();
     }
 
-    public Capsule getDetailCapsule(Long capsule_id) {
+    public CapsuleResponse getDetailCapsule(Long capsule_id) {
         Capsule capsule=capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NotFoundException::new);
         if(!capsule.getIsOpened())
             capsule.setIsOpened(true);
-        return capsule;
+        capsuleRepository.save(capsule);
+        return CapsuleResponse.toCapsuleResponse(capsule);
+    }
+
+    public List<CapsuleResponse> getListCapsule(String accessToken) {
+        Account account=accountService.findAccountByAccessToken(accessToken);
+        Long kakaoId=account.getKakaoId();
+        List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
+        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(kakaoId);
+        for(int i=0;i<listcapsule.size();i++){
+            capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(listcapsule.get(i)));
+        }
+        return capsuleResponseList;
     }
 }
