@@ -4,6 +4,7 @@ package com.example.timecapsule.account.service;
 import com.example.timecapsule.account.dto.response.MyAccountResponse;
 import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.account.repository.AccountRepository;
+import com.example.timecapsule.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,13 @@ public class AccountService {
         return accountRepository.findAccountByAccountEmail(accountEmail).orElse(null);
     }
 
+
     public MyAccountResponse insertAccount(Account newAccount) {
         Account saveAccount = accountRepository.save(newAccount);
         return MyAccountResponse.toAccountResponse(saveAccount);
+    }
+
+    public Account findAccountByAccessToken(String accessToken) {
+        return accountRepository.findAccountByAccessToken(accessToken).orElseThrow(NotFoundException::new);
     }
 }
