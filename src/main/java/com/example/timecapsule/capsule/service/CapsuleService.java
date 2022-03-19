@@ -2,8 +2,9 @@ package com.example.timecapsule.capsule.service;
 
 import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.account.service.AccountService;
-import com.example.timecapsule.capsule.dto.CapsuleRequest;
+import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
+import com.example.timecapsule.capsule.dto.response.SendCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,11 +24,12 @@ import java.util.List;
 public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final AccountService accountService;
-    public Capsule createCapsule(String accessToken,CapsuleRequest capsuleRequest){
+    public SendCapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
+        LocalDateTime currentDate = LocalDateTime.now();
         Account account = accountService.findAccountByAccessToken(accessToken);
-        Capsule capsule=capsuleRequest.toCapsule(account);
+        Capsule capsule=capsuleRequest.toCapsule(account,currentDate);
         capsuleRepository.save(capsule);
-        return capsule;
+        return SendCapsuleResponse.toSendResponse(capsule);
     }
     public List<String> getRandomNickname(){
         RestTemplate restTemplate = new RestTemplate();
