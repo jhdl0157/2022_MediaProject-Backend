@@ -2,6 +2,7 @@ package com.example.timecapsule.capsule.controller;
 
 import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
+import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.service.CapsuleService;
 import com.example.timecapsule.main.common.CommonResponse;
@@ -63,6 +64,12 @@ public class CapsuleController {
         String[] splitToken = accessToken.split(" ");
         capsuleService.deleteCapsule(capsule_id,splitToken[1]);
         return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
+    }
+    //보낸 캡슐 읽었는지만 확인
+    @GetMapping("/opening")
+    public ResponseEntity<ListResult<OpenCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("Authorization") String accessToken){
+        String[] splitToken = accessToken.split(" ");
+        return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(splitToken[1])),HttpStatus.OK);
     }
 
 }
