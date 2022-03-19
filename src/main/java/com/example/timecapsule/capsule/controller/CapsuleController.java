@@ -4,6 +4,8 @@ import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.service.CapsuleService;
+import com.example.timecapsule.main.common.CommonResponse;
+import com.example.timecapsule.main.common.CommonResult;
 import com.example.timecapsule.main.common.ListResult;
 import com.example.timecapsule.main.common.SingleResult;
 import com.example.timecapsule.main.common.service.ResponseService;
@@ -51,6 +53,16 @@ public class CapsuleController {
     ){
         String[] splitToken = accessToken.split(" ");
         return new ResponseEntity<>(responseService.getListResult( capsuleService.getListCapsule(splitToken[1])),HttpStatus.OK);
+    }
+    //캡슐 삭제하기
+    @DeleteMapping("/{capsule_id}")
+    public ResponseEntity<CommonResult> deleteCapsule(
+            @PathVariable Long capsule_id,
+            @RequestHeader("Authorization") String accessToken)
+    {
+        String[] splitToken = accessToken.split(" ");
+        capsuleService.deleteCapsule(capsule_id,splitToken[1]);
+        return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
     }
 
 }

@@ -21,6 +21,7 @@ public class CapsuleResponse {
     Long recipient;
     LocalDateTime duration;
     Point2D.Double location;
+    Long sender;
     public static CapsuleResponse toCapsuleResponse(Capsule capsule) {
         return CapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
@@ -29,6 +30,7 @@ public class CapsuleResponse {
                 .recipient(capsule.getRecipient())
                 .duration(capsule.getDuration())
                 .location(capsule.getLocation())
+                .sender(capsule.getSender())
                 .build();
     }
 
