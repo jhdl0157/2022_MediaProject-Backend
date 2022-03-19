@@ -7,6 +7,7 @@ import com.example.timecapsule.capsule.dto.response.ApiResponse;
 import com.example.timecapsule.capsule.dto.response.SendCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
+import com.example.timecapsule.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,12 @@ public class CapsuleService {
         ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
         log.info(responseEntity.getBody().getWord().get(0));
         return responseEntity.getBody().getWord();
+    }
+
+    public Capsule getDetailCapsule(Long capsule_id) {
+        Capsule capsule=capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NotFoundException::new);
+        if(!capsule.getIsOpened())
+            capsule.setIsOpened(true);
+        return capsule;
     }
 }

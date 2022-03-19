@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class CapsuleRequest {
     String title;
     String content;
-    Long kakaoId;
+    Long recipient;
     Long duration;
     Double latitude;
     Double longitude;
@@ -21,7 +21,7 @@ public class CapsuleRequest {
         capsule.addAccount(account);
         capsule.setCapsuleTitle(title);
         capsule.setCapsuleContent(content);
-        capsule.setKakaoId(kakaoId);
+        capsule.setRecipient(recipient);
         capsule.setDuration(currentDate.plusDays(duration));
         capsule.setIsOpened(false);
         capsule.setLocation(capsule.setLocationFunc(latitude,longitude));
