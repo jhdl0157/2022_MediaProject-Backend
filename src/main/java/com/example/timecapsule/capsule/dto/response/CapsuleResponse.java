@@ -18,6 +18,7 @@ public class CapsuleResponse {
     Long capsuleId;
     String title;
     String content;
+    String nickname;
     Long recipient;
     LocalDateTime duration;
     Point2D.Double location;
@@ -28,6 +29,7 @@ public class CapsuleResponse {
                 .capsuleId(capsule.getCapsuleId())
                 .title(capsule.getCapsuleTitle())
                 .content(capsule.getCapsuleContent())
+                .nickname(capsule.getNickname())
                 .recipient(capsule.getRecipient())
                 .duration(capsule.getDuration())
                 .location(capsule.getLocation())
