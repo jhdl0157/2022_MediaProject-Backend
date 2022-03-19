@@ -17,7 +17,7 @@ public class CapsuleResponse {
     LocalDateTime duration;
     Point2D.Double location;
 
-    public static CapsuleResponse toSendResponse(Capsule capsule) {
+    public static CapsuleResponse toCapsuleResponse(Capsule capsule) {
         return CapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
                 .title(capsule.getCapsuleTitle())

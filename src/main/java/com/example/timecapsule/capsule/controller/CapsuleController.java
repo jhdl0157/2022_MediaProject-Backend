@@ -41,7 +41,7 @@ public class CapsuleController {
 
     //캡슐 디테일 확인
     @GetMapping("detail/{capsule_id}")
-    public ResponseEntity<SingleResult<Capsule>> getMyCapsule(@PathVariable Long capsule_id){
+    public ResponseEntity<SingleResult<CapsuleResponse>> getMyCapsule(@PathVariable Long capsule_id){
         return new ResponseEntity<>(responseService.getSingleResult(capsuleService.getDetailCapsule(capsule_id)),HttpStatus.OK);
     }
 }

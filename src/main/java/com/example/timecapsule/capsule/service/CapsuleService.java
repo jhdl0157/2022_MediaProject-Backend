@@ -30,7 +30,7 @@ public class CapsuleService {
         Account account = accountService.findAccountByAccessToken(accessToken);
         Capsule capsule=capsuleRequest.toCapsule(account,currentDate);
         capsuleRepository.save(capsule);
-        return CapsuleResponse.toSendResponse(capsule);
+        return CapsuleResponse.toCapsuleResponse(capsule);
     }
     public List<String> getRandomNickname(){
         RestTemplate restTemplate = new RestTemplate();
@@ -40,10 +40,11 @@ public class CapsuleService {
         return responseEntity.getBody().getWord();
     }
 
-    public Capsule getDetailCapsule(Long capsule_id) {
+    public CapsuleResponse getDetailCapsule(Long capsule_id) {
         Capsule capsule=capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NotFoundException::new);
         if(!capsule.getIsOpened())
             capsule.setIsOpened(true);
-        return capsule;
+        capsuleRepository.save(capsule);
+        return CapsuleResponse.toCapsuleResponse(capsule);
     }
 }
