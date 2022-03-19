@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,14 +49,14 @@ public class CapsuleService {
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
 
-    public List<Capsule> getListCapsule(String accessToken) {
+    public List<CapsuleResponse> getListCapsule(String accessToken) {
         Account account=accountService.findAccountByAccessToken(accessToken);
         Long kakaoId=account.getKakaoId();
-        CapsuleResponse capsuleResponse=new CapsuleResponse();
+        List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
         List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(kakaoId);
         for(int i=0;i<listcapsule.size();i++){
-            capsuleResponse
+            capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(listcapsule.get(i)));
         }
-        return listcapsule;
+        return capsuleResponseList;
     }
 }
