@@ -37,7 +37,6 @@ public class AuthService {
 
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String kakaoRedirectUrl;
-
     @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
     private String kakaoUserInfoUrl;
     private final String KAKAO_URL = "https://kauth.kakao.com";

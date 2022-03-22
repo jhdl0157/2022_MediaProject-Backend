@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/api/capsule")
 public class CapsuleController {
+
     private final CapsuleService capsuleService;
+
     private final ResponseService responseService;
 
     //캡슐 등록
@@ -35,13 +37,11 @@ public class CapsuleController {
         CapsuleResponse capsule=capsuleService.createCapsule(splitToken[1],capsuleRequest);
         return new ResponseEntity<>(responseService.getSingleResult(capsule), HttpStatus.CREATED);
     }
-
     //랜덤 닉네임 생성요청
     @GetMapping("/nickname")
     public ResponseEntity<ListResult<String>> getNicknmae() {
     return new ResponseEntity<>(responseService.getListResult(capsuleService.getRandomNickname()),HttpStatus.OK);
     }
-
     //캡슐 디테일 확인
     @GetMapping("detail/{capsule_id}")
     public ResponseEntity<SingleResult<CapsuleResponse>> getMyCapsule(@PathVariable Long capsule_id){
@@ -71,5 +71,4 @@ public class CapsuleController {
         String[] splitToken = accessToken.split(" ");
         return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(splitToken[1])),HttpStatus.OK);
     }
-
 }

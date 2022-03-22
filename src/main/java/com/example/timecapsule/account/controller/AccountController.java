@@ -29,5 +29,4 @@ public class AccountController {
         log.info(code);
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(code)), HttpStatus.CREATED);
     }
-
 }
