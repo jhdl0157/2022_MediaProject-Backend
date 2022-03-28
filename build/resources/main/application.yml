@@ -16,9 +16,9 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             userNameAttribute: id
   datasource:
-    password: '0157'
-    username: jaeho
-    url: jdbc:mysql://localhost:3306/testdb
+    password: '49947sjasmine'
+    username: root
+    url: jdbc:mysql://localhost:3306/time-capsule
 
   jpa:
     hibernate:
