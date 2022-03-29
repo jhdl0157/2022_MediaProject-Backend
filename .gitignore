@@ -32,10 +32,3 @@ out/
 /dist/
 /nbdist/
 /.nb-gradle/
-
-build/reports/tests
-application.yml
-*.DS_Store
-build/reports/tests/test/packages/com.example.timecapsule.html
-build/reports/tests/test/index.html
-build/reports/tests/test/classes/com.example.timecapsule.TimecapsuleApplicationTests.html
