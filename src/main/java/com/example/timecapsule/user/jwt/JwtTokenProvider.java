@@ -10,10 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Arrays;
 import java.util.Base64;
@@ -66,4 +68,19 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, REFRESH_KEY)
                 .compact();
     }
+    public boolean validateToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date()); }
+        catch (Exception e) {
+            return false; } }
+
+    public String getUserInfoFromToken(String token){
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+    }
+
+//    public Authentication getAuthentication(String token){
+//        UserDetails userDetails = userDetailsService.load();
+//    }
+
 }

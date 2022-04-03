@@ -32,8 +32,20 @@ public class UserService {
         User user = User.builder()
                 .userId(userRequestDto.getUserId())
                 .userPw(encodedPw)
+                .userNickname(userRequestDto.getUserNickname())
+                .userEmail(userRequestDto.getUserEmail())
                 .build();
         userRepository.save(user);
+    }
+
+    public boolean isUserIdDuplicated (String userId){
+        Optional<User> user = userRepository.findUserByUserId(userId);
+        return user.isPresent();
+    }
+
+    public boolean isUserNicknameDuplicated (String userNickname){
+        Optional<User> user = userRepository.findUserByUserNickname(userNickname);
+        return user.isPresent();
     }
 
     public TokenResponseDto login(UserRequestDto userRequestDto) throws Exception{
