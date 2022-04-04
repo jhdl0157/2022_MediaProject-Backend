@@ -34,7 +34,7 @@ public class UserController {
         return ResponseEntity.ok(userService.login(userRequestDto));
     }
 
-    @GetMapping("/join/userIdCheck")
+    @GetMapping("/user/userIdCheck")
     public ResponseEntity<String> userIdDuplicationCheck(@RequestParam String userId){
         if (userService.isUserIdDuplicated(userId)){
             return ResponseEntity.status(HttpStatus.OK).body("user id already exists");
@@ -44,7 +44,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/join/userNicknameCheck")
+    @GetMapping("/user/userNicknameCheck")
     public ResponseEntity<String> userNicknameDuplicationCheck(@RequestParam String userNickname){
         if (userService.isUserNicknameDuplicated(userNickname)){
             return ResponseEntity.status(HttpStatus.OK).body("user nickname already exists");
@@ -52,6 +52,11 @@ public class UserController {
         else{
             return ResponseEntity.status(HttpStatus.OK).body("available user nickname");
         }
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "hi";
     }
 
 }

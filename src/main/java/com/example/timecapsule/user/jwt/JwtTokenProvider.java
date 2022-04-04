@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,8 @@ public class JwtTokenProvider {
     private final long ACCESS_TOKEN_VALID_TIME = 1 * 60 * 1000L;   // 1분
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
 
+    private final UserDetailsService userDetailsService;
+
     @PostConstruct
     protected void init() {
         System.out.println("SECRET_KEY: " + SECRET_KEY);
@@ -45,7 +48,7 @@ public class JwtTokenProvider {
 
     public String createAccessToken(String userId) {
         Claims claims = Jwts.claims();//.setSubject(userPk); // JWT payload 에 저장되는 정보단위
-        claims.put("userId", userId);
+        claims.put("userId", userId); //token을 userId로 만듦
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
@@ -71,16 +74,20 @@ public class JwtTokenProvider {
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+            //log.info("EXPIRATION:" + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date()); }
         catch (Exception e) {
-            return false; } }
-
-    public String getUserInfoFromToken(String token){
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+            return false; }
     }
 
-//    public Authentication getAuthentication(String token){
-//        UserDetails userDetails = userDetailsService.load();
-//    }
+    public String getUserInfoFromToken(String token){
+        log.info("body" + Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody());
+        return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("userId");
+    }
+
+    public Authentication getAuthentication(String token){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getUserInfoFromToken(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
 
 }

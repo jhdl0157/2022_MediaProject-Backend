@@ -19,7 +19,7 @@ public class EmailController {
         return ResponseEntity.status(HttpStatus.OK).body("success");
     }
 
-    @PostMapping("/verifyCode") // 이메일 인증 코드 검증
+    @PostMapping("/email/verifyCode") // 이메일 인증 코드 검증
     public ResponseEntity<String> verifyCode(@RequestParam String code) {
         if(EmailService.emailAuthCode.equals(code)) {
             return ResponseEntity.status(HttpStatus.OK).body("success");
