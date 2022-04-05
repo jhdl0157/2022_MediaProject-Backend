@@ -22,11 +22,12 @@ import javax.xml.ws.Response;
 @AllArgsConstructor
 public class UserController {
     private UserService userService;
+    private final ResponseService responseService;
 
     @PostMapping("/user")
-    public ResponseEntity<String> saveUser(@RequestBody UserRequestDto userRequestDto){
-        userService.register(userRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body("success");
+    public ResponseEntity<SingleResult<User>> saveUser(@RequestBody UserRequestDto userRequestDto){
+        User user=userService.register(userRequestDto);
+        return new ResponseEntity<>(responseService.getSingleResult(user), HttpStatus.OK);
     }
 
     @PostMapping("/login")
