@@ -77,6 +77,7 @@ public class JwtTokenProvider {
             //log.info("EXPIRATION:" + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date()); }
         catch (Exception e) {
+            //TODO 예외처리 하기
             return false; }
     }
 

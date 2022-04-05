@@ -26,7 +26,7 @@ public class UserService {
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void register(UserRequestDto userRequestDto){
+    public User register(UserRequestDto userRequestDto){
         String encodedPw = passwordEncoder.encode(userRequestDto.getUserPw());
 
         User user = User.builder()
@@ -36,6 +36,7 @@ public class UserService {
                 .userEmail(userRequestDto.getUserEmail())
                 .build();
         userRepository.save(user);
+        return user;
     }
 
     public boolean isUserIdDuplicated (String userId){

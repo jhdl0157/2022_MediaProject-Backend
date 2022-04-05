@@ -22,7 +22,7 @@ public class User extends BaseEntity implements UserDetails {
     private String userPw;
     private String userNickname;
     private String userEmail;
-
+    //TODO 연관관계 맵핑
     public User() {
     }
 

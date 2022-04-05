@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.InternetAddress;
@@ -51,7 +52,7 @@ public class EmailService {
         }
         return key.toString();
     }
-
+    @Async
     public void sendSimpleMessage(String recipient)throws Exception {
         MimeMessage message = createMessage(recipient);
         try{
