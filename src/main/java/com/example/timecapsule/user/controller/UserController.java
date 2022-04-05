@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
+
 @RestController
 @Slf4j
 @AllArgsConstructor
@@ -30,6 +32,31 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> login(@RequestBody UserRequestDto userRequestDto) throws Exception{
         return ResponseEntity.ok(userService.login(userRequestDto));
+    }
+
+    @GetMapping("/user/userIdCheck")
+    public ResponseEntity<String> userIdDuplicationCheck(@RequestParam String userId){
+        if (userService.isUserIdDuplicated(userId)){
+            return ResponseEntity.status(HttpStatus.OK).body("user id already exists");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body("available user id");
+        }
+    }
+
+    @GetMapping("/user/userNicknameCheck")
+    public ResponseEntity<String> userNicknameDuplicationCheck(@RequestParam String userNickname){
+        if (userService.isUserNicknameDuplicated(userNickname)){
+            return ResponseEntity.status(HttpStatus.OK).body("user nickname already exists");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body("available user nickname");
+        }
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "hi";
     }
 
 }

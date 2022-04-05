@@ -8,4 +8,6 @@ import lombok.Setter;
 public class UserRequestDto {
     private String userId;
     private String userPw;
+    private String userNickname;
+    private String userEmail;
 }
