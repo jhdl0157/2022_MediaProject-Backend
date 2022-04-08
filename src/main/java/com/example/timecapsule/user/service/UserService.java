@@ -1,6 +1,7 @@
 package com.example.timecapsule.user.service;
 
 import com.example.timecapsule.exception.NotFoundException;
+import com.example.timecapsule.exception.NotFoundUserException;
 import com.example.timecapsule.user.dto.TokenResponseDto;
 import com.example.timecapsule.user.dto.UserRequestDto;
 import com.example.timecapsule.user.entity.Auth;
@@ -59,7 +60,12 @@ public class UserService {
 
     public TokenResponseDto login(UserRequestDto userRequestDto) throws Exception{
         User user = userRepository.findUserByUserId(userRequestDto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User does not exist."));
+                //변경후
+                .orElseThrow(NotFoundUserException::new);
+
+        //변경전
+//                .orElseThrow(() -> new IllegalArgumentException("User does not exist."));
+        //윗부분 예외처리
 
         if (!passwordEncoder.matches(userRequestDto.getUserPw(), user.getUserPw())){
             throw new Exception("Wrong password.");
@@ -80,7 +86,7 @@ public class UserService {
                 .REFRESH_TOKEN(refreshToken)
                 .build();
     }
-
+    @Transactional(readOnly = true)
     public User findUserByAccessToken(String accessToken) {
 //        jwtTokenProvider.getUserInfoFromToken(accessToken);
 //        Auth auth=authRepository.findAuthByAccessToken(accessToken);

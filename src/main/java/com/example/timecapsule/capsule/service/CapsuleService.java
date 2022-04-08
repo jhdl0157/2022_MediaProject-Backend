@@ -36,10 +36,7 @@ public class CapsuleService {
     private final UserService userService;
     //캡슐 등록
     public CapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
-       //String userInfo=userService.getUsernameFromToken(accessToken);
-        //log.info("유저정보는 : {}",userInfo);
         LocalDateTime currentDate = LocalDateTime.now();
-        //Account account = accountService.findAccountByAccessToken(accessToken);
         User user=userService.findUserByAccessToken(accessToken);
         Capsule capsule=capsuleRequest.toCapsule(user,currentDate);
         capsuleRepository.save(capsule);
@@ -64,7 +61,7 @@ public class CapsuleService {
 
     public List<CapsuleResponse> getListCapsule(String accessToken) {
         User user=userService.findUserByAccessToken(accessToken);
-        Long userId=user.getId();
+        String userId=user.getUserId();
         List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
         List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(userId);
         for (Capsule capsule : listcapsule) {
@@ -76,7 +73,7 @@ public class CapsuleService {
     public int deleteCapsule(Long capsuleId,String accessToken) {
         Capsule nowCapsule=capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
         User nowuser=userService.findUserByAccessToken(accessToken);
-        if(nowCapsule.getRecipient().equals(nowuser.getId())) {
+        if(nowCapsule.getRecipient().equals(nowuser.getUserId())) {
             capsuleRepository.deleteById(capsuleId);
             return 200;
         }
@@ -86,7 +83,7 @@ public class CapsuleService {
 
     public List<OpenCapsuleResponse> OpenedCapsule(String accessToken) {
         User user=userService.findUserByAccessToken(accessToken);
-        Long senderId=user.getId();
+        String senderId=user.getUserId();
         List<OpenCapsuleResponse> capsuleResponseList=new ArrayList<>();
         List<Capsule> capsuleList=capsuleRepository.findCapsulesBySenderId(senderId);
         for(Capsule capsule : capsuleList){

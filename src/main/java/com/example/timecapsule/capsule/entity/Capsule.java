@@ -28,11 +28,11 @@ public class Capsule extends BaseEntity {
      String capsuleTitle;
      String capsuleContent;
      Boolean isOpened;
-     Long recipient;
+     String recipient;
      String nickname;
      LocalDateTime duration;
      Point2D.Double location;
-     Long senderId;
+     String senderId;
 
     @JsonIgnore
     @ManyToOne

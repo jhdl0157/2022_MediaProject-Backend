@@ -13,24 +13,24 @@ public class CapsuleRequest {
     String title;
     String content;
     String nickname;
-    Long recipient;
+    String recipient;
     Long duration;
     Double latitude;
     Double longitude;
 
-    public Capsule toCapsule(Account account, LocalDateTime currentDate) {
-        Capsule capsule=new Capsule();
-        capsule.addAccount(account);
-        capsule.setCapsuleTitle(title);
-        capsule.setCapsuleContent(content);
-        capsule.setNickname(nickname);
-        capsule.setRecipient(recipient);
-        capsule.setDuration(currentDate.plusDays(duration));
-        capsule.setIsOpened(false);
-        capsule.setLocation(capsule.setLocationFunc(latitude,longitude));
-        capsule.setSenderId(account.getKakaoId());
-        return capsule;
-    }
+//    public Capsule toCapsule(Account account, LocalDateTime currentDate) {
+//        Capsule capsule=new Capsule();
+//        capsule.addAccount(account);
+//        capsule.setCapsuleTitle(title);
+//        capsule.setCapsuleContent(content);
+//        capsule.setNickname(nickname);
+//        capsule.setRecipient(recipient);
+//        capsule.setDuration(currentDate.plusDays(duration));
+//        capsule.setIsOpened(false);
+//        capsule.setLocation(capsule.setLocationFunc(latitude,longitude));
+//        capsule.setSenderId(account.getKakaoId());
+//        return capsule;
+//    }
 
     public Capsule toCapsule(User user, LocalDateTime currentDate) {
         Capsule capsules=new Capsule();
@@ -42,7 +42,7 @@ public class CapsuleRequest {
         capsules.setDuration(currentDate.plusDays(duration));
         capsules.setIsOpened(false);
         capsules.setLocation(capsules.setLocationFunc(latitude,longitude));
-        capsules.setSenderId(user.getId());
+        capsules.setSenderId(user.getUserId());
         return capsules;
     }
 }

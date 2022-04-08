@@ -31,7 +31,6 @@ public class CapsuleController {
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @RequestPart(value = "capsule") CapsuleRequest capsuleRequest
     ){
-        String[] splitToken = accessToken.split(" ");
         CapsuleResponse capsule=capsuleService.createCapsule(accessToken,capsuleRequest);
         return new ResponseEntity<>(responseService.getSingleResult(capsule), HttpStatus.CREATED);
     }
@@ -50,28 +49,25 @@ public class CapsuleController {
     //현재 사용자가 받은 캡슐 불러오기
     @GetMapping("/main")
     public ResponseEntity<ListResult<CapsuleResponse>> getMyCapsule(
-            @RequestHeader("Authorization") String accessToken
+            @RequestHeader("X-AUTH-TOKEN") String accessToken
     ){
-        String[] splitToken = accessToken.split(" ");
-        return new ResponseEntity<>(responseService.getListResult( capsuleService.getListCapsule(splitToken[1])),HttpStatus.OK);
+        return new ResponseEntity<>(responseService.getListResult( capsuleService.getListCapsule(accessToken)),HttpStatus.OK);
     }
     //캡슐 삭제하기
     @DeleteMapping("/{capsule_id}")
     public ResponseEntity<CommonResult> deleteCapsule(
             @PathVariable Long capsule_id,
-            @RequestHeader("Authorization") String accessToken)
+            @RequestHeader("X-AUTH-TOKEN") String accessToken)
     {
-        String[] splitToken = accessToken.split(" ");
-        int code=capsuleService.deleteCapsule(capsule_id,splitToken[1]);
+        int code=capsuleService.deleteCapsule(capsule_id,accessToken);
         if(code ==200)
             return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
         return new ResponseEntity<>(responseService.getFailResult(),HttpStatus.BAD_REQUEST);
     }
     //보낸 캡슐 읽었는지만 확인
     @GetMapping("/opening")
-    public ResponseEntity<ListResult<OpenCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("Authorization") String accessToken){
-        String[] splitToken = accessToken.split(" ");
-        return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(splitToken[1])),HttpStatus.OK);
+    public ResponseEntity<ListResult<OpenCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("X-AUTH-TOKEN") String accessToken){
+        return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(accessToken)),HttpStatus.OK);
     }
 
 }
