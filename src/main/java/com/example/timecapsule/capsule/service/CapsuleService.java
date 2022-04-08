@@ -35,7 +35,7 @@ public class CapsuleService {
     private final UserRepository userRepository;
     private final UserService userService;
     //캡슐 등록
-    public CapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
+    public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest){
         LocalDateTime currentDate = LocalDateTime.now();
         User user=userService.findUserByAccessToken(accessToken);
         Capsule capsule=capsuleRequest.toCapsule(user,currentDate);
@@ -51,7 +51,7 @@ public class CapsuleService {
         return responseEntity.getBody().getWord();
     }
 
-    public CapsuleResponse getDetailCapsule(Long capsule_id) {
+    public CapsuleResponse getDetailCapsule(final Long capsule_id) {
         Capsule capsule=capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NotFoundException::new);
         if(!capsule.getIsOpened())
             capsule.setIsOpened(true);
@@ -59,7 +59,7 @@ public class CapsuleService {
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
 
-    public List<CapsuleResponse> getListCapsule(String accessToken) {
+    public List<CapsuleResponse> getListCapsule(final String accessToken) {
         User user=userService.findUserByAccessToken(accessToken);
         String userId=user.getUserId();
         List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
@@ -70,7 +70,7 @@ public class CapsuleService {
         return capsuleResponseList;
     }
 
-    public int deleteCapsule(Long capsuleId,String accessToken) {
+    public int deleteCapsule(final Long capsuleId,final String accessToken) {
         Capsule nowCapsule=capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
         User nowuser=userService.findUserByAccessToken(accessToken);
         if(nowCapsule.getRecipient().equals(nowuser.getUserId())) {
@@ -81,7 +81,7 @@ public class CapsuleService {
 
     }
 
-    public List<OpenCapsuleResponse> OpenedCapsule(String accessToken) {
+    public List<OpenCapsuleResponse> OpenedCapsule(final String accessToken) {
         User user=userService.findUserByAccessToken(accessToken);
         String senderId=user.getUserId();
         List<OpenCapsuleResponse> capsuleResponseList=new ArrayList<>();

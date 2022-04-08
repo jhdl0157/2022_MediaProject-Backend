@@ -32,7 +32,7 @@ public class CapsuleRequest {
 //        return capsule;
 //    }
 
-    public Capsule toCapsule(User user, LocalDateTime currentDate) {
+    public Capsule toCapsule(final User user, final LocalDateTime currentDate) {
         Capsule capsules=new Capsule();
         capsules.addUser(user);
         capsules.setCapsuleTitle(title);
