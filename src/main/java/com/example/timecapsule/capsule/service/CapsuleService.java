@@ -9,9 +9,14 @@ import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
 import com.example.timecapsule.exception.NotFoundException;
+import com.example.timecapsule.user.entity.User;
+import com.example.timecapsule.user.repository.UserRepository;
+import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -27,18 +32,23 @@ import java.util.List;
 public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final AccountService accountService;
+    private final UserRepository userRepository;
+    private final UserService userService;
     //캡슐 등록
     public CapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
+//        String userInfo=userService.getUsernameFromToken(accessToken);
+//        log.info("유저정보는 : {}",userInfo);
         LocalDateTime currentDate = LocalDateTime.now();
-        Account account = accountService.findAccountByAccessToken(accessToken);
-        Capsule capsule=capsuleRequest.toCapsule(account,currentDate);
+        //Account account = accountService.findAccountByAccessToken(accessToken);
+        User user=userService.findUserByAccessToken(accessToken);
+        Capsule capsule=capsuleRequest.toCapsule(user,currentDate);
         capsuleRepository.save(capsule);
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
     
     public List<String> getRandomNickname(){
         RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl= "https://bloodgang.shop/api/nickname?count=4";
+        String fooResourceUrl= "https://bloodgang.shop/api/v1/character";
         ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
         log.info(responseEntity.getBody().getWord().get(0));
         return responseEntity.getBody().getWord();
@@ -53,26 +63,30 @@ public class CapsuleService {
     }
 
     public List<CapsuleResponse> getListCapsule(String accessToken) {
-        Account account=accountService.findAccountByAccessToken(accessToken);
-        Long kakaoId=account.getKakaoId();
+        User user=userService.findUserByAccessToken(accessToken);
+        Long userId=user.getId();
         List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
-        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(kakaoId);
+        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(userId);
         for (Capsule capsule : listcapsule) {
             capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(capsule));
         }
         return capsuleResponseList;
     }
 
-    public void deleteCapsule(Long capsuleId,String accessToken) {
+    public int deleteCapsule(Long capsuleId,String accessToken) {
         Capsule nowCapsule=capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
-        Account nowUser=accountService.findAccountByAccessToken(accessToken);
-        if(nowCapsule.getRecipient().equals(nowUser.getKakaoId()))
-             capsuleRepository.deleteById(capsuleId);
+        User nowuser=userService.findUserByAccessToken(accessToken);
+        if(nowCapsule.getRecipient().equals(nowuser.getId())) {
+            capsuleRepository.deleteById(capsuleId);
+            return 200;
+        }
+        return 401;
+
     }
 
     public List<OpenCapsuleResponse> OpenedCapsule(String accessToken) {
-        Account account=accountService.findAccountByAccessToken(accessToken);
-        Long senderId=account.getKakaoId();
+        User user=userService.findUserByAccessToken(accessToken);
+        Long senderId=user.getId();
         List<OpenCapsuleResponse> capsuleResponseList=new ArrayList<>();
         List<Capsule> capsuleList=capsuleRepository.findCapsulesBySenderId(senderId);
         for(Capsule capsule : capsuleList){

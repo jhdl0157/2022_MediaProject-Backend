@@ -1,5 +1,6 @@
 package com.example.timecapsule.user.service;
 
+import com.example.timecapsule.exception.NotFoundException;
 import com.example.timecapsule.user.dto.TokenResponseDto;
 import com.example.timecapsule.user.dto.UserRequestDto;
 import com.example.timecapsule.user.entity.Auth;
@@ -7,9 +8,12 @@ import com.example.timecapsule.user.entity.User;
 import com.example.timecapsule.user.jwt.JwtTokenProvider;
 import com.example.timecapsule.user.repository.AuthRepository;
 import com.example.timecapsule.user.repository.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ import java.util.Optional;
 @AllArgsConstructor
 @Transactional
 public class UserService {
+    private final String SECRET = "sec";
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthRepository authRepository;
@@ -62,6 +67,7 @@ public class UserService {
 
         Auth auth = Auth.builder()
                 .userId(user.getUserId())
+                .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
         authRepository.save(auth);
@@ -72,4 +78,21 @@ public class UserService {
                 .build();
     }
 
+    public User findUserByAccessToken(String accessToken) {
+        Auth auth=authRepository.findAuthByAccessToken(accessToken);
+        return userRepository.findById(auth.getId()).orElseThrow(NotFoundException::new);
+    }
+
+    public String getUsernameFromToken(String token) {
+        String username = String.valueOf(getAllClaims(token).get("userId"));
+        log.info("getUsernameFormToken subject = {}", username);
+        return username;
+    }
+    private Claims getAllClaims(String token) {
+        log.info("getAllClaims token = {}", token);
+        return Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }

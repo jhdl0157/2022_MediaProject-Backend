@@ -38,7 +38,7 @@ public class CapsuleController {
 
     //랜덤 닉네임 생성요청
     @GetMapping("/nickname")
-    public ResponseEntity<ListResult<String>> getNicknmae() {
+    public ResponseEntity<ListResult<String>> getNickname() {
     return new ResponseEntity<>(responseService.getListResult(capsuleService.getRandomNickname()),HttpStatus.OK);
     }
 
@@ -62,8 +62,10 @@ public class CapsuleController {
             @RequestHeader("Authorization") String accessToken)
     {
         String[] splitToken = accessToken.split(" ");
-        capsuleService.deleteCapsule(capsule_id,splitToken[1]);
-        return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
+        int code=capsuleService.deleteCapsule(capsule_id,splitToken[1]);
+        if(code ==200)
+            return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
+        return new ResponseEntity<>(responseService.getFailResult(),HttpStatus.BAD_REQUEST);
     }
     //보낸 캡슐 읽었는지만 확인
     @GetMapping("/opening")

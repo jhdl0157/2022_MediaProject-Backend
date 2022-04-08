@@ -15,6 +15,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @Entity
+@NoArgsConstructor
 public class Auth extends BaseEntity  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

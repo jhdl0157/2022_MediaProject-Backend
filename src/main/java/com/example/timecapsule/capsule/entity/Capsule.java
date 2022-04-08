@@ -2,6 +2,7 @@ package com.example.timecapsule.capsule.entity;
 
 import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.config.BaseEntity;
+import com.example.timecapsule.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,8 +39,17 @@ public class Capsule extends BaseEntity {
     @JoinColumn(name = "account_id")
     public Account account;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id")
+    public User user;
+
     public void addAccount(Account updateAccount) {
         this.setAccount(updateAccount);
+    }
+
+    public void addUser(User updateUser) {
+        this.setUser(updateUser);
     }
     public Point2D.Double setLocationFunc(double latitude, double longitude){
         Point2D.Double now=new Point2D.Double();
