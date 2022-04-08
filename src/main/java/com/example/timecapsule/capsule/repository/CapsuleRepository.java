@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface CapsuleRepository extends JpaRepository<Capsule,Long> {
     Optional<Capsule> findCapsuleByCapsuleId(Long capsule_id);
-    List<Capsule> findCapsulesByRecipient(String recipient);
+    List<Capsule> findCapsulesByRecipientOrderByCreatedAtDesc(String recipient);
     List<Capsule> findCapsulesBySenderId(String senderid);
 }

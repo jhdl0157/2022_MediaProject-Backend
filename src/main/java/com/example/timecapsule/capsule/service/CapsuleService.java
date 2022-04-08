@@ -63,7 +63,7 @@ public class CapsuleService {
         User user=userService.findUserByAccessToken(accessToken);
         String userId=user.getUserId();
         List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
-        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipient(userId);
+        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipientOrderByCreatedAtDesc(userId);
         for (Capsule capsule : listcapsule) {
             capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(capsule));
         }
