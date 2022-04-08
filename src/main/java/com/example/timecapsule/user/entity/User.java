@@ -1,5 +1,6 @@
 package com.example.timecapsule.user.entity;
 
+import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.config.BaseEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,12 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class User extends BaseEntity implements UserDetails {
     @Id
@@ -22,10 +26,10 @@ public class User extends BaseEntity implements UserDetails {
     private String userPw;
     private String userNickname;
     private String userEmail;
-    //TODO 연관관계 맵핑
-    public User() {
-    }
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    List<Capsule> products = new ArrayList<>();
+    //TODO 연관관계 맵핑
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
