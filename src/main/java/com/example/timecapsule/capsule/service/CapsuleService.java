@@ -36,8 +36,8 @@ public class CapsuleService {
     private final UserService userService;
     //캡슐 등록
     public CapsuleResponse createCapsule(String accessToken, CapsuleRequest capsuleRequest){
-//        String userInfo=userService.getUsernameFromToken(accessToken);
-//        log.info("유저정보는 : {}",userInfo);
+       //String userInfo=userService.getUsernameFromToken(accessToken);
+        //log.info("유저정보는 : {}",userInfo);
         LocalDateTime currentDate = LocalDateTime.now();
         //Account account = accountService.findAccountByAccessToken(accessToken);
         User user=userService.findUserByAccessToken(accessToken);

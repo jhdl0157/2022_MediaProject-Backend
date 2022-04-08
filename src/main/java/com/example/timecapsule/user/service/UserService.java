@@ -13,7 +13,11 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +29,6 @@ import java.util.Optional;
 @AllArgsConstructor
 @Transactional
 public class UserService {
-    private final String SECRET = "sec";
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthRepository authRepository;
@@ -79,20 +82,10 @@ public class UserService {
     }
 
     public User findUserByAccessToken(String accessToken) {
-        Auth auth=authRepository.findAuthByAccessToken(accessToken);
-        return userRepository.findById(auth.getId()).orElseThrow(NotFoundException::new);
+//        jwtTokenProvider.getUserInfoFromToken(accessToken);
+//        Auth auth=authRepository.findAuthByAccessToken(accessToken);
+        log.info("유저의 정보는 : {}",jwtTokenProvider.getUserInfoFromToken(accessToken));
+        return userRepository.findUserByUserId(jwtTokenProvider.getUserInfoFromToken(accessToken)).orElseThrow(NotFoundException::new);
     }
 
-    public String getUsernameFromToken(String token) {
-        String username = String.valueOf(getAllClaims(token).get("userId"));
-        log.info("getUsernameFormToken subject = {}", username);
-        return username;
-    }
-    private Claims getAllClaims(String token) {
-        log.info("getAllClaims token = {}", token);
-        return Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(token)
-                .getBody();
-    }
 }

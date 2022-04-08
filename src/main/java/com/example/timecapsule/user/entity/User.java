@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class User extends BaseEntity implements UserDetails {
     @Id
@@ -26,12 +27,9 @@ public class User extends BaseEntity implements UserDetails {
     private String userNickname;
     private String userEmail;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     List<Capsule> products = new ArrayList<>();
     //TODO 연관관계 맵핑
-    public User() {
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

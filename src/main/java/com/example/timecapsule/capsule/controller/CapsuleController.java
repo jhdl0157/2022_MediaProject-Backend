@@ -28,11 +28,11 @@ public class CapsuleController {
     //캡슐 등록
     @PostMapping
     public ResponseEntity<SingleResult<CapsuleResponse>> postCapsule(
-            @RequestHeader("Authorization") String accessToken,
+            @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @RequestPart(value = "capsule") CapsuleRequest capsuleRequest
     ){
         String[] splitToken = accessToken.split(" ");
-        CapsuleResponse capsule=capsuleService.createCapsule(splitToken[1],capsuleRequest);
+        CapsuleResponse capsule=capsuleService.createCapsule(accessToken,capsuleRequest);
         return new ResponseEntity<>(responseService.getSingleResult(capsule), HttpStatus.CREATED);
     }
 
