@@ -38,6 +38,7 @@ public class CapsuleService {
     public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest){
         LocalDateTime currentDate = LocalDateTime.now();
         User user=userService.findUserByAccessToken(accessToken);
+
         Capsule capsule=Capsule.builder()
                 .user(user)
                 .capsuleTitle(capsuleRequest.getTitle())
