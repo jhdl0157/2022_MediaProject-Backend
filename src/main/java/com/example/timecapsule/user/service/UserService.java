@@ -87,6 +87,7 @@ public class UserService {
         return makeToken(user);
     }
     public TokenResponseDto makeToken(User user){
+        //TODO 여기서 중복으로 auth에 데이터가 쌓인다
         String accessToken = jwtTokenProvider.createAccessToken(user.getUserId());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
 
