@@ -70,7 +70,7 @@ public class UserService {
         if (!passwordEncoder.matches(userRequestDto.getUserPw(), user.getUserPw())){
             throw new Exception("Wrong password.");
         }
-
+        //Todo 이거 함수로 빼서 재사용 하기 카카오쪽에서
         String accessToken = jwtTokenProvider.createAccessToken(user.getUserId());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
 
@@ -92,6 +92,10 @@ public class UserService {
 //        Auth auth=authRepository.findAuthByAccessToken(accessToken);
         log.info("유저의 정보는 : {}",jwtTokenProvider.getUserInfoFromToken(accessToken));
         return userRepository.findUserByUserId(jwtTokenProvider.getUserInfoFromToken(accessToken)).orElseThrow(NotFoundException::new);
+    }
+
+    public User findUserByUserEmail(String email){
+        return userRepository.findUserByUserEmail(email).orElseThrow(NotFoundUserException::new);
     }
 
 }

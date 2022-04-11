@@ -6,6 +6,8 @@ import com.example.timecapsule.account.dto.response.MyAccountResponse;
 import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.account.repository.AccountRepository;
 import com.example.timecapsule.exception.NotFoundException;
+import com.example.timecapsule.user.entity.User;
+import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +31,7 @@ import java.util.Optional;
 public class AuthService {
     private final AccountService accountService;
     private final AccountRepository accountRepository;
+    private final UserService userService;
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoRestApiKey;
 
@@ -61,9 +64,10 @@ public class AuthService {
         if (accountEmail == null || accountEmail == "") {
             accountEmail = String.valueOf(kakaoResponse.getId()) + EMAIL_SUFFIX;
         }
-        Account accountForCheck = accountService.findAccountByAccountEmail(accountEmail);
+        User accountForCheck = userService.findUserByUserEmail(accountEmail);
         if (accountForCheck != null) {
-            // 존재한다면 Token 값을 갱신하고 반환한다.
+            // 기존 회원이라면 존재한다면 Token 값을 갱신하고 반환한다.
+            //우리가 만든 jwt를 보내준다.
             return updateTokenWithAccount(accountForCheck.getAccountId(), kakaoTokens.get("access_token"));
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
