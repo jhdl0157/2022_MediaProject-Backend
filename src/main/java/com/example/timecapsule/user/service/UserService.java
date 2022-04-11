@@ -1,5 +1,6 @@
 package com.example.timecapsule.user.service;
 
+import com.example.timecapsule.account.dto.response.KakaoResponse;
 import com.example.timecapsule.exception.NotFoundException;
 import com.example.timecapsule.exception.NotFoundUserException;
 import com.example.timecapsule.user.dto.TokenResponseDto;
@@ -47,7 +48,19 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-
+    public User register(KakaoResponse kakaoResponse){
+        String encodedPw = passwordEncoder.encode(kakaoResponse.getId()+"kakao");
+        if(kakaoResponse.getKakao_account().getEmail()==null || kakaoResponse.getKakao_account().getEmail().equals("") )
+            kakaoResponse.getKakao_account().setEmail(kakaoResponse.getId()+"@gmail.com");
+        User user = User.builder()
+                .userId(kakaoResponse.getId().toString())
+                .userPw(encodedPw)
+                .userNickname(kakaoResponse.getProperties().getNickname())
+                .userEmail(kakaoResponse.getKakao_account().getEmail())
+                .build();
+        userRepository.save(user);
+        return user;
+    }
     public boolean isUserIdDuplicated (String userId){
         Optional<User> user = userRepository.findUserByUserId(userId);
         return user.isPresent();
@@ -70,7 +83,11 @@ public class UserService {
         if (!passwordEncoder.matches(userRequestDto.getUserPw(), user.getUserPw())){
             throw new Exception("Wrong password.");
         }
-
+        //Todo 이거 함수로 빼서 재사용 하기 카카오쪽에서
+        return makeToken(user);
+    }
+    public TokenResponseDto makeToken(User user){
+        //TODO 여기서 중복으로 auth에 데이터가 쌓인다
         String accessToken = jwtTokenProvider.createAccessToken(user.getUserId());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUserId());
 
@@ -92,6 +109,10 @@ public class UserService {
 //        Auth auth=authRepository.findAuthByAccessToken(accessToken);
         log.info("유저의 정보는 : {}",jwtTokenProvider.getUserInfoFromToken(accessToken));
         return userRepository.findUserByUserId(jwtTokenProvider.getUserInfoFromToken(accessToken)).orElseThrow(NotFoundException::new);
+    }
+
+    public User findUserByUserEmail(String email){
+        return userRepository.findUserByUserEmail(email).orElse(null);
     }
 
 }

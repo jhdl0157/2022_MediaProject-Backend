@@ -12,8 +12,6 @@ public class MyAccountResponse {
     Long accountId;
     String accountEmail;
     String profileNickname;
-    String userName;
-    String profileImageUrl;
     String accessToken;
     Long kakaoId;
     LocalDateTime createdAt;
@@ -22,10 +20,7 @@ public class MyAccountResponse {
     public static MyAccountResponse toAccountResponse(Account account) {
         return MyAccountResponse.builder()
                 .accessToken(account.getAccessToken())
-                .profileNickname(account.getProfileNickname())
-                .userName(account.getUserName())
                 .accountEmail(account.getAccountEmail())
-                .profileImageUrl(account.getProfileImageUrl())
                 .accountId(account.getAccountId())
                 .kakaoId(account.getKakaoId())
                 .createdAt(account.getCreatedAt())

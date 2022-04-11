@@ -25,8 +25,6 @@ public class Account extends BaseEntity {
     Long accountId;
     String accountEmail;
     String profileNickname;
-    String userName;
-    String profileImageUrl;
     String accessToken;
     Long kakaoId;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")

@@ -1,5 +1,6 @@
 package com.example.timecapsule.config;
 
+import com.example.timecapsule.exception.NOT;
 import com.example.timecapsule.exception.NotFoundException;
 import com.example.timecapsule.exception.NotFoundUserException;
 import com.example.timecapsule.main.common.CommonResponse;
@@ -24,5 +25,10 @@ public class ExceptionAdvice {
     public ResponseEntity<CommonResult> NotFoundUserException(NotFoundUserException e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.NOTFOUND);
         return new ResponseEntity<>(commonResult, HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler(NOT.class)
+    public ResponseEntity<CommonResult> NOT(NOT e) {
+        CommonResult commonResult = responseService.getFailResult(CommonResponse.NOT);
+        return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }
 }

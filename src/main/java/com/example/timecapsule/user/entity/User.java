@@ -27,6 +27,10 @@ public class User extends BaseEntity implements UserDetails {
     private String userNickname;
     private String userEmail;
 
+    @OneToOne
+    @JoinColumn(name = "auth_id")
+    private Auth auth;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     List<Capsule> products = new ArrayList<>();
     //TODO 연관관계 맵핑
