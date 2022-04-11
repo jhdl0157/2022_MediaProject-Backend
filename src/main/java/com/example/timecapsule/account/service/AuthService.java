@@ -55,7 +55,7 @@ public class AuthService {
                 .toString();
     }
 
-    public MyAccountResponse getKakaoLogin(String code) {
+    public User getKakaoLogin(String code) {
         HashMap<String, String> kakaoTokens = getKakaoTokens(code);
         KakaoResponse kakaoResponse = getKakaoUserInfo(kakaoTokens.get("access_token"));
 
@@ -68,11 +68,13 @@ public class AuthService {
         if (accountForCheck != null) {
             // 기존 회원이라면 존재한다면 Token 값을 갱신하고 반환한다.
             //우리가 만든 jwt를 보내준다.
-            return updateTokenWithAccount(accountForCheck.getAccountId(), kakaoTokens.get("access_token"));
+            userService.makeToken(accountForCheck);
+            return accountForCheck;
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
-            return accountService.insertAccount(
-                    kakaoResponse.toAccount(kakaoTokens.get("access_token")));
+            User newuser= userService.register(kakaoResponse);
+            userService.makeToken(newuser);
+            return newuser;
         }
     }
     public HashMap<String, String> getKakaoTokens(String code) {
