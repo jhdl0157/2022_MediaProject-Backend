@@ -38,7 +38,17 @@ public class CapsuleService {
     public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest){
         LocalDateTime currentDate = LocalDateTime.now();
         User user=userService.findUserByAccessToken(accessToken);
-        Capsule capsule=capsuleRequest.toCapsule(user,currentDate);
+        Capsule capsule=Capsule.builder()
+                .user(user)
+                .capsuleTitle(capsuleRequest.getTitle())
+                .capsuleContent(capsuleRequest.getContent())
+                .duration(currentDate.plusDays(capsuleRequest.getDuration()))
+                .isOpened(false)
+                .recipient(capsuleRequest.getRecipient())
+                .nickname(capsuleRequest.getNickname())
+                .senderId(user.getUserId())
+                .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(),capsuleRequest.getLongitude()))
+                .build();
         capsuleRepository.save(capsule);
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
