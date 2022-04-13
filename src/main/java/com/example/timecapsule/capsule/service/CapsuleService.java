@@ -36,20 +36,8 @@ public class CapsuleService {
     private final UserService userService;
     //캡슐 등록
     public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest){
-        LocalDateTime currentDate = LocalDateTime.now();
         User user=userService.findUserByAccessToken(accessToken);
-
-        Capsule capsule=Capsule.builder()
-                .user(user)
-                .capsuleTitle(capsuleRequest.getTitle())
-                .capsuleContent(capsuleRequest.getContent())
-                .duration(currentDate.plusDays(capsuleRequest.getDuration()))
-                .isOpened(false)
-                .recipient(capsuleRequest.getRecipient())
-                .nickname(capsuleRequest.getNickname())
-                .senderId(user.getUserId())
-                .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(),capsuleRequest.getLongitude()))
-                .build();
+        Capsule capsule = Capsule.of(capsuleRequest, user);
         capsuleRepository.save(capsule);
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
@@ -72,31 +60,28 @@ public class CapsuleService {
 
     public List<CapsuleResponse> getListCapsule(final String accessToken) {
         User user=userService.findUserByAccessToken(accessToken);
-        String userId=user.getUserId();
         List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
-        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipientOrderByCreatedAtDesc(userId);
+        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipientOrderByCreatedAtDesc(user.getUserId());
         for (Capsule capsule : listcapsule) {
             capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(capsule));
         }
         return capsuleResponseList;
     }
 
-    public int deleteCapsule(final Long capsuleId,final String accessToken) {
+    public void deleteCapsule(final Long capsuleId,final String accessToken) {
         Capsule nowCapsule=capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
         User nowuser=userService.findUserByAccessToken(accessToken);
-        if(nowCapsule.getRecipient().equals(nowuser.getUserId())) {
-            capsuleRepository.deleteById(capsuleId);
-            return 200;
+        if(!nowCapsule.getRecipient().equals(nowuser.getUserId())) {
+            throw new IllegalArgumentException();
         }
-        return 401;
-
+        capsuleRepository.deleteById(capsuleId);
     }
 
     public List<OpenCapsuleResponse> OpenedCapsule(final String accessToken) {
         User user=userService.findUserByAccessToken(accessToken);
-        String senderId=user.getUserId();
         List<OpenCapsuleResponse> capsuleResponseList=new ArrayList<>();
-        List<Capsule> capsuleList=capsuleRepository.findCapsulesBySenderId(senderId);
+        //수정
+        List<Capsule> capsuleList=capsuleRepository.findCapsulesBySenderId(user.getUserId());
         for(Capsule capsule : capsuleList){
             capsuleResponseList.add(OpenCapsuleResponse.toOpenCapsule(capsule));
         }

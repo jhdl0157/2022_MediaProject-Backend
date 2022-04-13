@@ -1,6 +1,7 @@
 package com.example.timecapsule.capsule.entity;
 
 import com.example.timecapsule.account.entity.Account;
+import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
 import com.example.timecapsule.config.BaseEntity;
 import com.example.timecapsule.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -50,7 +51,22 @@ public class Capsule extends BaseEntity {
 //        this.setAccount(updateAccount);
 //    }
 //
-//    public void addUser(User updateUser) {
-//        this.setUser(updateUser);
-//    }
+    public void addUser(User updateUser) {
+        this.setUser(updateUser);
+    }
+
+    public static Capsule of(CapsuleRequest capsuleRequest,User user) {
+        return Capsule.builder()
+                .user(user)
+                .capsuleTitle(capsuleRequest.getTitle())
+                .capsuleContent(capsuleRequest.getContent())
+                .duration(LocalDateTime.now().plusDays(capsuleRequest.getDuration()))
+                .isOpened(false)
+                .recipient(capsuleRequest.getRecipient())
+                .nickname(capsuleRequest.getNickname())
+                .senderId(user.getUserId())
+                .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(),capsuleRequest.getLongitude()))
+                .build();
+    }
+
 }

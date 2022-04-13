@@ -59,15 +59,12 @@ public class CapsuleController {
             @PathVariable Long capsule_id,
             @RequestHeader("X-AUTH-TOKEN") String accessToken)
     {
-        int code=capsuleService.deleteCapsule(capsule_id,accessToken);
-        if(code ==200)
-            return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
-        return new ResponseEntity<>(responseService.getFailResult(),HttpStatus.BAD_REQUEST);
+        capsuleService.deleteCapsule(capsule_id,accessToken);
+        return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
     }
     //보낸 캡슐 읽었는지만 확인
     @GetMapping("/opening")
     public ResponseEntity<ListResult<OpenCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("X-AUTH-TOKEN") String accessToken){
         return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(accessToken)),HttpStatus.OK);
     }
-
 }
