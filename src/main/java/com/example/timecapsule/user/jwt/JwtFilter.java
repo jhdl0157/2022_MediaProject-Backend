@@ -38,6 +38,10 @@ public class JwtFilter extends GenericFilterBean {
             Authentication authentication = jwtTokenProvider.getAuthentication(tokenFromHeader);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        //토큰 만료
+        else if (!jwtTokenProvider.validateToken(tokenFromHeader)){
+
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

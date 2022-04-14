@@ -33,7 +33,7 @@ public class JwtTokenProvider {
     @Value("${secret.refresh}")
     private String REFRESH_KEY;// = "ref";
 
-    private final long ACCESS_TOKEN_VALID_TIME = 1 * 60 * 1000L;   // 1분
+    private final long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;   // 30분
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
 
     private final UserDetailsService userDetailsService;
@@ -77,7 +77,7 @@ public class JwtTokenProvider {
             //log.info("EXPIRATION:" + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date()); }
         catch (Exception e) {
-            //TODO 예외처리 하기
+            //TODO
             return false; }
     }
 
