@@ -1,5 +1,6 @@
 package com.example.timecapsule.user.jwt;
 
+import com.example.timecapsule.user.dto.TokenResponseDto;
 import com.example.timecapsule.user.entity.User;
 import io.jsonwebtoken.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class JwtTokenProvider {
     @Value("${secret.refresh}")
     private String REFRESH_KEY;// = "ref";
 
-    private final long ACCESS_TOKEN_VALID_TIME = 10 * 60 * 1000L;   // 10분
+    private final long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;   // 30분
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
 
     private final UserDetailsService userDetailsService;
@@ -76,9 +77,10 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
             //log.info("EXPIRATION:" + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date()); }
-        catch (Exception e) {
-            //TODO 예외처리 하기
-            return false; }
+        catch (ExpiredJwtException e) {
+            log.info("만료된 JWT token");
+        }
+        return false;
     }
 
     public String getUserInfoFromToken(String token){
@@ -90,5 +92,10 @@ public class JwtTokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserInfoFromToken(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
+
+//    public TokenResponseDto reissueToken(TokenResponseDto tokenResponseDto){
+//        //refresh token 검증
+//
+//    }
 
 }

@@ -33,10 +33,12 @@ public class JwtFilter extends GenericFilterBean {
 
         //토큰 유효
         if (tokenFromHeader != null && jwtTokenProvider.validateToken(tokenFromHeader)){
-            //토큰으로 정보 받기
-            log.info("in");
             Authentication authentication = jwtTokenProvider.getAuthentication(tokenFromHeader);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        //토큰 만료
+        else if (!jwtTokenProvider.validateToken(tokenFromHeader)){
+
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }
