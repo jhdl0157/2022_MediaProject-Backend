@@ -1,5 +1,6 @@
 package com.example.timecapsule.user.jwt;
 
+import com.example.timecapsule.user.dto.TokenResponseDto;
 import com.example.timecapsule.user.entity.User;
 import io.jsonwebtoken.*;
 import lombok.AllArgsConstructor;
@@ -76,9 +77,10 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
             //log.info("EXPIRATION:" + claims.getBody().getExpiration());
             return !claims.getBody().getExpiration().before(new Date()); }
-        catch (Exception e) {
-            //TODO
-            return false; }
+        catch (ExpiredJwtException e) {
+            log.info("만료된 JWT token");
+        }
+        return false;
     }
 
     public String getUserInfoFromToken(String token){
@@ -90,5 +92,10 @@ public class JwtTokenProvider {
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserInfoFromToken(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
+
+//    public TokenResponseDto reissueToken(TokenResponseDto tokenResponseDto){
+//        //refresh token 검증
+//
+//    }
 
 }

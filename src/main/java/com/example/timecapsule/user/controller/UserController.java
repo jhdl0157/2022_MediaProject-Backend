@@ -28,9 +28,9 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/user")
-    public ResponseEntity<SingleResult<User>> saveUser(@RequestBody UserRequestDto userRequestDto){
-        User user=userService.register(userRequestDto);
-        return new ResponseEntity<>(responseService.getSingleResult(user), HttpStatus.OK);
+    public ResponseEntity<SingleResult<String>> saveUser(@RequestBody UserRequestDto userRequestDto){
+        userService.register(userRequestDto);
+        return new ResponseEntity<>(responseService.getSingleResult("created user"), HttpStatus.OK);
     }
 
     @PostMapping("/login")
