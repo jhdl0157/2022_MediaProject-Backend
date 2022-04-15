@@ -19,11 +19,11 @@ public class CapsuleResponse {
     String title;
     String content;
     String nickname;
-    Long recipient;
+    String recipient;
     LocalDateTime duration;
     Point2D.Double location;
     Boolean opened;
-    Long sender;
+    String sender;
     public static CapsuleResponse toCapsuleResponse(Capsule capsule) {
         return CapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())

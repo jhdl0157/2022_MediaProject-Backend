@@ -6,15 +6,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @AllArgsConstructor
 @Builder
 @Entity
+@NoArgsConstructor
 public class Auth extends BaseEntity  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -22,5 +20,7 @@ public class Auth extends BaseEntity  {
     private String userId;
     private String accessToken;
     private String refreshToken;
+   @OneToOne(mappedBy = "user")
+    private User user;
 
 }

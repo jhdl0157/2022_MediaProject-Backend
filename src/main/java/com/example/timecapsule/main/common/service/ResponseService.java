@@ -30,6 +30,11 @@ public class ResponseService {
         setSuccessResult(result);
         return result;
     }
+    public CommonResult getFailResult() {
+        CommonResult result = new CommonResult();
+        setFailResult(result);
+        return result;
+    }
 
     public CommonResult getFailResult(CommonResponse commonResponse) {
         CommonResult result = new CommonResult();
@@ -40,6 +45,11 @@ public class ResponseService {
         result.setSuccess(false);
         result.setMsg(commonResponse.getMsg());
         result.setCode(commonResponse.getCode());
+    }
+    private void setFailResult( CommonResult result) {
+        result.setSuccess(false);
+        result.setCode(CommonResponse.FAIL.getCode());
+        result.setMsg(CommonResponse.FAIL.getMsg());
     }
 
     private void setSuccessResult(CommonResult result) {

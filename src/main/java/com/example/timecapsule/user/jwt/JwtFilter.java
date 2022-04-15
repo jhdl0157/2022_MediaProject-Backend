@@ -29,7 +29,7 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException{
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         String tokenFromHeader = httpServletRequest.getHeader("X-AUTH-TOKEN");
-        //log.info("TOKEN FROM HEADER:" + tokenFromHeader);
+        log.info("TOKEN FROM HEADER:" + tokenFromHeader);
 
         //토큰 유효
         if (tokenFromHeader != null && jwtTokenProvider.validateToken(tokenFromHeader)){
