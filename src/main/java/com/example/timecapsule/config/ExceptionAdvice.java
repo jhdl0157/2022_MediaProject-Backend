@@ -1,8 +1,6 @@
 package com.example.timecapsule.config;
 
-import com.example.timecapsule.exception.NOT;
-import com.example.timecapsule.exception.NotFoundException;
-import com.example.timecapsule.exception.NotFoundUserException;
+import com.example.timecapsule.exception.*;
 import com.example.timecapsule.main.common.CommonResponse;
 import com.example.timecapsule.main.common.CommonResult;
 import com.example.timecapsule.main.common.service.ResponseService;
@@ -29,6 +27,21 @@ public class ExceptionAdvice {
     @ExceptionHandler(NOT.class)
     public ResponseEntity<CommonResult> NOT(NOT e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.NOT);
+        return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
+    }
+    @ExceptionHandler(DuplicateDATAException.class)
+    public ResponseEntity<CommonResult> DuplicateDATAException(DuplicateDATAException e) {
+        CommonResult commonResult = responseService.getFailResult(CommonResponse.DuplicateDATA);
+        return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
+    }
+    @ExceptionHandler(PasswordException.class)
+    public ResponseEntity<CommonResult> PasswordException(PasswordException e) {
+        CommonResult commonResult = responseService.getFailResult(CommonResponse.PASSWORD);
+        return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
+    }
+    @ExceptionHandler(IdException.class)
+    public ResponseEntity<CommonResult> PasswordException(IdException e) {
+        CommonResult commonResult = responseService.getFailResult(CommonResponse.ID);
         return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }
 }

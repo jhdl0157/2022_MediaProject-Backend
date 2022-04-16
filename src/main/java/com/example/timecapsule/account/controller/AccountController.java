@@ -1,11 +1,10 @@
 package com.example.timecapsule.account.controller;
 
 
-import com.example.timecapsule.account.dto.response.MyAccountResponse;
 import com.example.timecapsule.account.service.AuthService;
 import com.example.timecapsule.main.common.SingleResult;
 import com.example.timecapsule.main.common.service.ResponseService;
-import com.example.timecapsule.user.entity.User;
+import com.example.timecapsule.user.dto.response.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,10 +24,8 @@ public class AccountController {
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLoginUrl()), HttpStatus.OK);
     }
     @GetMapping("/login")
-    public ResponseEntity<SingleResult<User>> getTokenAndJoinOrLogin(
+    public ResponseEntity<SingleResult<TokenResponseDto>> getTokenAndJoinOrLogin(
             @RequestParam("code") String code) {
-        log.info(code);
         return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(code)), HttpStatus.CREATED);
     }
-
 }

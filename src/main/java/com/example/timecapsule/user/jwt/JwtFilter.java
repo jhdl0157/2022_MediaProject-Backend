@@ -37,9 +37,10 @@ public class JwtFilter extends GenericFilterBean {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         //토큰 만료
-        else if (!jwtTokenProvider.validateToken(tokenFromHeader)){
-
-        }
+//        else if (!jwtTokenProvider.validateToken(tokenFromHeader)){
+//            log.info("토큰이 만료됨");
+//
+//        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

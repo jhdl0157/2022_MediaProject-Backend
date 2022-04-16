@@ -20,7 +20,4 @@ public class Auth extends BaseEntity  {
     private String userId;
     private String accessToken;
     private String refreshToken;
-   @OneToOne(mappedBy = "user")
-    private User user;
-
 }
