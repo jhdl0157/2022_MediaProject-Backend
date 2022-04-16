@@ -1,4 +1,4 @@
-package com.example.timecapsule.user.dto;
+package com.example.timecapsule.user.dto.request;
 
 import com.example.timecapsule.user.entity.User;
 import lombok.Getter;

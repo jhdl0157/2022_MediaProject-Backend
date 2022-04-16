@@ -1,5 +1,6 @@
 package com.example.timecapsule.capsule.entity;
 
+import com.example.timecapsule.account.dto.response.KakaoResponse;
 import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.config.BaseEntity;
 import com.example.timecapsule.user.entity.User;
@@ -53,4 +54,5 @@ public class Capsule extends BaseEntity {
 //    public void addUser(User updateUser) {
 //        this.setUser(updateUser);
 //    }
+
 }
