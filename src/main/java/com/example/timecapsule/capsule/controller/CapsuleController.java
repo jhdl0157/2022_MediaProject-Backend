@@ -31,8 +31,7 @@ public class CapsuleController {
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
             @RequestPart(value = "capsule") CapsuleRequest capsuleRequest
     ){
-        CapsuleResponse capsule=capsuleService.createCapsule(accessToken,capsuleRequest);
-        return new ResponseEntity<>(responseService.getSingleResult(capsule), HttpStatus.CREATED);
+        return new ResponseEntity<>(responseService.getSingleResult(capsuleService.createCapsule(accessToken,capsuleRequest)), HttpStatus.CREATED);
     }
 
     //랜덤 닉네임 생성요청

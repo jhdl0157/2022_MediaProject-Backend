@@ -43,7 +43,7 @@ public class CapsuleService {
                 .user(user)
                 .capsuleTitle(capsuleRequest.getTitle())
                 .capsuleContent(capsuleRequest.getContent())
-                .duration(currentDate.plusDays(capsuleRequest.getDuration()))
+                .duration(capsuleRequest.getDuration())
                 .isOpened(false)
                 .recipient(capsuleRequest.getRecipient())
                 .nickname(capsuleRequest.getNickname())

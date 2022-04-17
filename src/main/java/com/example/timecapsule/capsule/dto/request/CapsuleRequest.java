@@ -5,8 +5,10 @@ import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.user.entity.User;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.awt.geom.Point2D;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,7 +17,8 @@ public class CapsuleRequest {
     String content;
     String nickname;
     String recipient;
-    Long duration;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate duration;
     Double latitude;
     Double longitude;
 

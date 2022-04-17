@@ -7,10 +7,12 @@ import com.example.timecapsule.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,7 +31,8 @@ public class Capsule extends BaseEntity {
      Boolean isOpened;
      String recipient;
      String nickname;
-     LocalDateTime duration;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate duration;
      Point2D.Double location;
      String senderId;
 
