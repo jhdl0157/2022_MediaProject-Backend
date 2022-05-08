@@ -9,7 +9,7 @@
 -----
 ## ✍️ 사용기술
 - java 1.8
-- Spring boot 2.5.9
+- Spring boot 2.6.4
 - Spring Data Jpa
 - Oauth2
 - Gradle
