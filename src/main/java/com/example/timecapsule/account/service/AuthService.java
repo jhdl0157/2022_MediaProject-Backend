@@ -66,10 +66,10 @@ public class AuthService {
         if (accountForCheck != null) {
             // 기존 회원이라면 존재한다면 Token 값을 갱신하고 반환한다.
             //우리가 만든 jwt를 보내준다.
-            return userService.makeToken(accountForCheck.getUserId());
+            return userService.issueToken(accountForCheck.getUserId());
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
-            return  userService.makeToken(userService.register(kakaoResponse).getUserId());
+            return  userService.issueToken(userService.register(kakaoResponse).getUserId());
         }
     }
     public HashMap<String, String> getKakaoTokens(String code) {

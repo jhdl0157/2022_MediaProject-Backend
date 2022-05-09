@@ -1,6 +1,7 @@
 package com.example.timecapsule.user.service;
 
 import com.example.timecapsule.account.dto.response.KakaoResponse;
+import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.exception.*;
 import com.example.timecapsule.user.dto.response.TokenResponseDto;
 import com.example.timecapsule.user.dto.request.UserRequestDto;
@@ -56,19 +57,26 @@ public class UserService {
         if (!passwordEncoder.matches(userRequestDto.getUserPw(), user.getUserPw())){
             throw new PasswordException();
         }
-        return makeToken(user.getUserId());
+        return issueToken(user.getUserId());
     }
-    public TokenResponseDto makeToken(final String userid){
-        //TODO 여기서 중복으로 auth에 데이터가 쌓인다
+    public TokenResponseDto issueToken(final String userid){
         String accessToken = jwtTokenProvider.createAccessToken(userid);
         String refreshToken = jwtTokenProvider.createRefreshToken(userid);
 
-        Auth auth = Auth.builder()
-                .userId(userid)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-        authRepository.save(auth);
+        Auth authFromRepository = authRepository.findAuthByUserId(userid);
+        
+        if (authFromRepository != null) {
+            authRepository.updateAuth(userid, accessToken, refreshToken);
+        }
+        else{
+            Auth auth = Auth.builder()
+                    .userId(userid)
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .build();
+            authRepository.save(auth);
+        }
+
 
         return TokenResponseDto.builder()
                 .ACCESS_TOKEN(accessToken)

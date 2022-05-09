@@ -50,7 +50,7 @@ public class JwtTokenProvider {
 
     public String createRefreshToken(String userId) {
         Claims claims = Jwts.claims();
-        claims.put("userId", userId); //
+        claims.put("userId", userId); //load userId
         Date now = new Date();
         Date expiration = new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME);
 
@@ -64,7 +64,9 @@ public class JwtTokenProvider {
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
-            //log.info("EXPIRATION:" + claims.getBody().getExpiration());
+
+            //System.out.println("claims.getBody :" + claims.getBody());
+            //claims.getBody : {userId=lee, iat=1652106416, exp=1652108216}
             return !claims.getBody().getExpiration().before(new Date()); }
         catch (ExpiredJwtException e) {
             log.info("만료된 JWT token");
