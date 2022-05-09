@@ -27,7 +27,4 @@ public class Account extends BaseEntity {
     String profileNickname;
     String accessToken;
     Long kakaoId;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
-    List<Capsule> products = new ArrayList<>();
-
 }

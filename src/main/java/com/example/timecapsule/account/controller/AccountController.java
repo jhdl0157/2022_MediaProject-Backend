@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
     private final ResponseService responseService;
     private final AuthService authService;
-    @GetMapping("/login-url")
-    public ResponseEntity<SingleResult<String>> loginUrl() {
-        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLoginUrl()), HttpStatus.OK);
-    }
-    @GetMapping("/login")
+//    @GetMapping("/login-url")
+//    public ResponseEntity<SingleResult<String>> loginUrl() {
+//        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLoginUrl()), HttpStatus.OK);
+//    }
+    @GetMapping("/kakaologin")
     public ResponseEntity<SingleResult<TokenResponseDto>> getTokenAndJoinOrLogin(
-            @RequestParam("code") String code) {
-        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(code)), HttpStatus.CREATED);
+            @RequestParam("token") String token) {
+        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(token)), HttpStatus.CREATED);
     }
 }
