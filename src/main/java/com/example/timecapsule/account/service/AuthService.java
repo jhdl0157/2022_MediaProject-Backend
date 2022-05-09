@@ -54,9 +54,9 @@ public class AuthService {
                 "&response_type=code";
     }
 
-    public TokenResponseDto getKakaoLogin(String code) {
-        HashMap<String, String> kakaoTokens = getKakaoTokens(code);
-        KakaoResponse kakaoResponse = getKakaoUserInfo(kakaoTokens.get("access_token"));
+    public TokenResponseDto getKakaoLogin(String token) {
+       //HashMap<String, String> kakaoTokens = getKakaoTokens(token);
+        KakaoResponse kakaoResponse = getKakaoUserInfo(token);
 
         String accountEmail = kakaoResponse.getKakao_account().getEmail();
         if (accountEmail == null || accountEmail.equals("")) {

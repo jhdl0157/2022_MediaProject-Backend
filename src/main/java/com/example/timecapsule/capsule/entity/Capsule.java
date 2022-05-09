@@ -35,11 +35,8 @@ public class Capsule extends BaseEntity {
     LocalDate duration;
      Point2D.Double location;
      String senderId;
+     Boolean locationCheck;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    public Account account;
 
     @JsonIgnore
     @ManyToOne
