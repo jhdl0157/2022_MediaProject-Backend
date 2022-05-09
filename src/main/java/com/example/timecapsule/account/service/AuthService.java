@@ -54,7 +54,7 @@ public class AuthService {
                 "&response_type=code";
     }
 
-    public TokenResponseDto getKakaoLogin(String token) {
+    public TokenResponseDto getKakaoLogin(final String token) {
        //HashMap<String, String> kakaoTokens = getKakaoTokens(token);
         KakaoResponse kakaoResponse = getKakaoUserInfo(token);
 
@@ -90,7 +90,7 @@ public class AuthService {
 
         return tokenResEntity.getBody();
     }
-    public KakaoResponse getKakaoUserInfo(String accessToken) {
+    public KakaoResponse getKakaoUserInfo(final String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
