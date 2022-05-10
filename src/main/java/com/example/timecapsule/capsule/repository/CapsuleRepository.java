@@ -1,7 +1,5 @@
 package com.example.timecapsule.capsule.repository;
 
-import com.example.timecapsule.account.entity.Account;
-import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

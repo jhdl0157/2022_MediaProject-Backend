@@ -36,8 +36,8 @@ public class CapsuleController {
 
     //랜덤 닉네임 생성요청
     @GetMapping("/nickname")
-    public ResponseEntity<ListResult<String>> getNickname() {
-    return new ResponseEntity<>(responseService.getListResult(capsuleService.getRandomNickname()),HttpStatus.OK);
+    public ResponseEntity<SingleResult<String>> getNickname() {
+    return new ResponseEntity<>(responseService.getSingleResult(capsuleService.getRandomNickname()),HttpStatus.OK);
     }
 
     //캡슐 디테일 확인
