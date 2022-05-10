@@ -27,7 +27,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-    private final AccountRepository accountRepository;
     private final UserService userService;
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoRestApiKey;
@@ -97,14 +96,5 @@ public class AuthService {
 
         return userInfo.getBody();
     }
-    public MyAccountResponse updateTokenWithAccount(Long accountId, String accessToken) {
-        Optional<Account> optionalExistAccount = accountRepository.findById(accountId);
-        Account existAccount = optionalExistAccount.map(account -> {
-            account.setAccessToken(accessToken);
-            return account;
-        }).orElseThrow(NotFoundException::new);
 
-        accountRepository.save(existAccount);
-        return MyAccountResponse.toAccountResponse(existAccount);
-    }
 }

@@ -1,5 +1,7 @@
 package com.example.timecapsule.user.controller;
 
+import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
+import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
 import com.example.timecapsule.main.common.CommonResult;
 import com.example.timecapsule.main.common.SingleResult;
 import com.example.timecapsule.main.common.service.ResponseService;
@@ -54,6 +56,14 @@ public class UserController {
         String userIdFromToken = jwtTokenProvider.getUserInfoFromToken(token);
         System.out.println("userIdFromToken = " + userIdFromToken);
         return "hi";
+    }
+    @DeleteMapping("/delete/{user_id}")
+    public ResponseEntity<CommonResult> deleteId(
+            @RequestHeader("X-AUTH-TOKEN") String accessToken,
+            @PathVariable Long user_id
+    ){
+        userService.deleteUser(user_id,accessToken);
+        return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
     }
 
 }

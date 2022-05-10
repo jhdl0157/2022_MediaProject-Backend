@@ -35,14 +35,4 @@ public class KakaoResponse {
         }
     }
 
-    public Account toAccount(String accessToken) {
-        Account account = new Account();
-        if (this.kakao_account.email == null || this.kakao_account.email.equals(""))
-            account.setAccountEmail(String.valueOf(this.id));
-        else account.setAccountEmail(this.kakao_account.email);
-        account.setProfileNickname(this.properties.nickname);
-        account.setAccessToken(accessToken);
-        account.setKakaoId(this.id);
-        return account;
-    }
 }

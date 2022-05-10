@@ -15,14 +15,4 @@ public class MyAccountResponse {
     Long kakaoId;
     LocalDateTime createdAt;
 
-
-    public static MyAccountResponse toAccountResponse(Account account) {
-        return MyAccountResponse.builder()
-                .accessToken(account.getAccessToken())
-                .accountEmail(account.getAccountEmail())
-                .accountId(account.getAccountId())
-                .kakaoId(account.getKakaoId())
-                .createdAt(account.getCreatedAt())
-                .build();
-    }
 }

@@ -87,5 +87,13 @@ public class UserService {
         return userRepository.findUserByUserEmail(email).orElse(null);
     }
 
+    public void deleteUser(Long userId,String accesstoken){
+        User nowuser=findUserByAccessToken(accesstoken);
+        if(nowuser.getId().equals(userId)) {
+            userRepository.deleteById(userId);
+        }else{
+            throw new IdException();
+        }
+    }
 
 }
