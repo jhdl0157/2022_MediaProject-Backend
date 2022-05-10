@@ -34,6 +34,7 @@ public class CapsuleService {
     private final AccountService accountService;
     private final UserRepository userRepository;
     private final UserService userService;
+    private static final String RANDOM_NICKNAME_API_URL = "https://bloodgang.shop/api/v1/character";
     //캡슐 등록
     public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest){
         LocalDateTime currentDate = LocalDateTime.now();
@@ -54,12 +55,12 @@ public class CapsuleService {
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
     
-    public List<String> getRandomNickname(){
+    public String getRandomNickname(){
         RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl= "https://bloodgang.shop/api/v1/character";
+        String fooResourceUrl= RANDOM_NICKNAME_API_URL;
         ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
         log.info(responseEntity.getBody().getWord().get(0));
-        return responseEntity.getBody().getWord();
+        return responseEntity.getBody().getWord().get(0);
     }
 
     public CapsuleResponse getDetailCapsule(final Long capsule_id) {
