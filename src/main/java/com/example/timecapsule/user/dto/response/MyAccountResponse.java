@@ -1,6 +1,5 @@
-package com.example.timecapsule.account.dto.response;
+package com.example.timecapsule.user.dto.response;
 
-import com.example.timecapsule.account.entity.Account;
 import lombok.Builder;
 import lombok.Data;
 

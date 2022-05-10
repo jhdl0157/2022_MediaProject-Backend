@@ -1,7 +1,5 @@
 package com.example.timecapsule.capsule.entity;
 
-import com.example.timecapsule.account.dto.response.KakaoResponse;
-import com.example.timecapsule.account.entity.Account;
 import com.example.timecapsule.config.BaseEntity;
 import com.example.timecapsule.user.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,10 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.awt.*;
 import java.awt.geom.Point2D;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

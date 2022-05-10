@@ -1,6 +1,6 @@
 package com.example.timecapsule.user.service;
 
-import com.example.timecapsule.account.dto.response.KakaoResponse;
+import com.example.timecapsule.user.dto.response.KakaoResponse;
 import com.example.timecapsule.exception.*;
 import com.example.timecapsule.user.dto.response.TokenResponseDto;
 import com.example.timecapsule.user.dto.request.UserRequestDto;

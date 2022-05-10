@@ -1,7 +1,5 @@
 package com.example.timecapsule.capsule.service;
 
-import com.example.timecapsule.account.entity.Account;
-import com.example.timecapsule.account.service.AccountService;
 import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
 import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
@@ -10,13 +8,10 @@ import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
 import com.example.timecapsule.exception.NotFoundException;
 import com.example.timecapsule.user.entity.User;
-import com.example.timecapsule.user.repository.UserRepository;
 import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -31,8 +26,6 @@ import java.util.List;
 @Transactional
 public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
-    private final AccountService accountService;
-    private final UserRepository userRepository;
     private final UserService userService;
     private static final String RANDOM_NICKNAME_API_URL = "https://bloodgang.shop/api/v1/character";
     //캡슐 등록

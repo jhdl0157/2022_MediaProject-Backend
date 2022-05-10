@@ -1,14 +1,11 @@
-package com.example.timecapsule.account.service;
+package com.example.timecapsule.user.service;
 
 
-import com.example.timecapsule.account.dto.response.KakaoResponse;
-import com.example.timecapsule.account.dto.response.MyAccountResponse;
-import com.example.timecapsule.account.entity.Account;
-import com.example.timecapsule.account.repository.AccountRepository;
+import com.example.timecapsule.user.dto.response.KakaoResponse;
+import com.example.timecapsule.user.dto.response.MyAccountResponse;
 import com.example.timecapsule.exception.NotFoundException;
 import com.example.timecapsule.user.dto.response.TokenResponseDto;
 import com.example.timecapsule.user.entity.User;
-import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +27,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-    private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final UserService userService;
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
