@@ -18,6 +18,5 @@ public class Auth extends BaseEntity  {
     @Id
     private Long id;
     private String userId;
-    private String accessToken;
     private String refreshToken;
 }

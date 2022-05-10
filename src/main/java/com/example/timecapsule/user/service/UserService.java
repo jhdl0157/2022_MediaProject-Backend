@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -66,12 +68,11 @@ public class UserService {
         Auth authFromRepository = authRepository.findAuthByUserId(userid);
         
         if (authFromRepository != null) {
-            authRepository.updateAuth(userid, accessToken, refreshToken);
+            authRepository.updateAuth(userid, refreshToken);
         }
         else{
             Auth auth = Auth.builder()
                     .userId(userid)
-                    .accessToken(accessToken)
                     .refreshToken(refreshToken)
                     .build();
             authRepository.save(auth);
@@ -95,5 +96,9 @@ public class UserService {
         return userRepository.findUserByUserEmail(email).orElse(null);
     }
 
+
+    public void logout(String userId){
+        //token 무효화
+    }
 
 }

@@ -46,6 +46,11 @@ public class UserController {
         return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
     }
 
+//    @GetMapping("/logout")
+//    public ResponseEntity<CommonResult> logout(){
+//
+//    }
+
     @GetMapping("/test")
     public String test(@RequestHeader Map<String, String> headers){
         System.out.println("headers = " + headers);

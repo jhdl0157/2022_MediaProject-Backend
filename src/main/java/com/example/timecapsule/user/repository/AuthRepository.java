@@ -11,11 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface AuthRepository extends JpaRepository<Auth, Long> {
-    Auth findAuthByAccessToken(String accessToken);
     Auth findAuthByUserId(String userId);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Auth SET accessToken= :access, refreshToken= :refresh WHERE userId= :userId")
-    Integer updateAuth(@Param("userId") String userId, @Param("access") String access, @Param("refresh") String refresh);
+    Integer updateAuth(@Param("userId") String userId, @Param("refresh") String refresh);
     //TODO update time 반영안됨
 }

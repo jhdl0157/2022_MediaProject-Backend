@@ -24,7 +24,7 @@ public class EmailController {
 
     @GetMapping("/verifyCode") // 이메일 인증 코드 검증
     public ResponseEntity<CommonResult> verifyCode(@RequestParam String code) {
-        if(EmailService.emailAuthCode.equals(code)) {
+        if(emailService.emailAuthCode.equals(code)) {
             return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
         }
         return new ResponseEntity<>(responseService.getFailResult(), HttpStatus.BAD_REQUEST);

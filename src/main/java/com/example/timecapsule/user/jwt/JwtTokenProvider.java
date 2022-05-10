@@ -1,5 +1,8 @@
 package com.example.timecapsule.user.jwt;
 
+import com.example.timecapsule.user.dto.response.TokenResponseDto;
+import com.example.timecapsule.user.entity.Auth;
+import com.example.timecapsule.user.repository.AuthRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,7 @@ public class JwtTokenProvider {
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
 
     private final UserDetailsService userDetailsService;
+    private AuthRepository authRepository;
 
     @PostConstruct
     protected void init() {
@@ -84,9 +88,26 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-//    public TokenResponseDto reissueToken(TokenResponseDto tokenResponseDto){
-//        //refresh token 검증
-//
-//    }
+    public TokenResponseDto reissueToken(TokenResponseDto tokenResponseDto, String token){
+        //do not need to reissue token
+        if(validateToken(tokenResponseDto.getACCESS_TOKEN())) {
+            throw new IllegalArgumentException();
+        }
+
+        String userIdFromToken = getUserInfoFromToken(token);
+
+        //only if access token is expired and validated
+        if(getUserInfoFromToken(tokenResponseDto.getACCESS_TOKEN()).equals(userIdFromToken)){
+            Auth authFromRepo = authRepository.findAuthByUserId(getUserInfoFromToken(userIdFromToken));
+            String refreshTokenFromRepo = authFromRepo.getRefreshToken();
+            //refresh token is validated
+            if (refreshTokenFromRepo.equals(tokenResponseDto.getREFRESH_TOKEN())){
+                String newRefreshToken = createRefreshToken(userIdFromToken);
+                authRepository.updateAuth(userIdFromToken, newRefreshToken);
+                return new TokenResponseDto(refreshTokenFromRepo, newRefreshToken);
+            }
+        }
+        return new TokenResponseDto("","");
+    }
 
 }
