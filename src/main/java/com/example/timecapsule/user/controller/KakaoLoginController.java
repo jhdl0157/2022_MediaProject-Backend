@@ -22,7 +22,7 @@ public class KakaoLoginController {
 
     @GetMapping("/kakaologin")
     public ResponseEntity<SingleResult<TokenResponseDto>> getTokenAndJoinOrLogin(
-            @RequestParam("token") String token) {
-        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(token)), HttpStatus.CREATED);
+            @RequestParam("token") String accessToken) {
+        return new ResponseEntity<>(responseService.getSingleResult(authService.getKakaoLogin(accessToken)), HttpStatus.CREATED);
     }
 }
