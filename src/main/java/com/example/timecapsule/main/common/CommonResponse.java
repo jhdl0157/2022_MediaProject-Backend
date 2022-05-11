@@ -16,7 +16,8 @@ public enum CommonResponse {
     DuplicateDATA(-502,"중복된 데이터"),
     NOT(-2012,"이건 오류"),
     PASSWORD(-504,"비밀번호오류"),
-    ID(-503,"아이디오류");
+    ID(-503,"아이디오류"),
+    UNAUTHORIZED(-402,"카카오 엑세스토큰 오류");
 
     private final int code;
     private final String msg;

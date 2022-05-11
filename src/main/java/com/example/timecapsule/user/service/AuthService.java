@@ -1,6 +1,7 @@
 package com.example.timecapsule.user.service;
 
 
+import com.example.timecapsule.exception.UNAUTHORIZEDException;
 import com.example.timecapsule.user.dto.response.KakaoResponse;
 import com.example.timecapsule.user.dto.response.MyAccountResponse;
 import com.example.timecapsule.exception.NotFoundException;
@@ -95,7 +96,7 @@ public class AuthService {
             return userInfo.getBody();
         } catch (HttpClientErrorException e){
             log.info("오류: {}",e.getStatusCode());
-            throw new NotFoundException();
+            throw new UNAUTHORIZEDException();
         }
     }
 
