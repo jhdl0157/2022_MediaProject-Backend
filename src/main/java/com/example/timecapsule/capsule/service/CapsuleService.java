@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,12 +29,12 @@ public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final UserService userService;
     private static final String RANDOM_NICKNAME_API_URL = "https://bloodgang.shop/api/v1/character";
-    //캡슐 등록
-    public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest){
-        LocalDateTime currentDate = LocalDateTime.now();
-        User user=userService.findUserByAccessToken(accessToken);
 
-        Capsule capsule=Capsule.builder()
+    //캡슐 등록
+    public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest) {
+        User user = userService.findUserByAccessToken(accessToken);
+
+        Capsule capsule = Capsule.builder()
                 .user(user)
                 .capsuleTitle(capsuleRequest.getTitle())
                 .capsuleContent(capsuleRequest.getContent())
@@ -42,44 +43,41 @@ public class CapsuleService {
                 .recipient(capsuleRequest.getRecipient())
                 .nickname(capsuleRequest.getNickname())
                 .senderId(user.getUserId())
-                .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(),capsuleRequest.getLongitude()))
+                .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(), capsuleRequest.getLongitude()))
                 .build();
         capsuleRepository.save(capsule);
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
-    
-    public String getRandomNickname(){
+
+    public String getRandomNickname() {
         RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl= RANDOM_NICKNAME_API_URL;
+        String fooResourceUrl = RANDOM_NICKNAME_API_URL;
         ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
         log.info(responseEntity.getBody().getWord().get(0));
         return responseEntity.getBody().getWord().get(0);
     }
 
     public CapsuleResponse getDetailCapsule(final Long capsule_id) {
-        Capsule capsule=capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NotFoundException::new);
-        if(!capsule.getIsOpened())
+        Capsule capsule = capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NotFoundException::new);
+        if (!capsule.getIsOpened())
             capsule.setIsOpened(true);
         capsuleRepository.save(capsule);
         return CapsuleResponse.toCapsuleResponse(capsule);
     }
 
     public List<CapsuleResponse> getListCapsule(final String accessToken) {
-        User user=userService.findUserByAccessToken(accessToken);
-        String userId=user.getUserId();
-        List<CapsuleResponse> capsuleResponseList=new ArrayList<>();
-        List<Capsule> listcapsule=capsuleRepository.findCapsulesByRecipientOrderByCreatedAtDesc(userId);
-        for (Capsule capsule : listcapsule) {
-            capsuleResponseList.add(CapsuleResponse.toCapsuleResponse(capsule));
-        }
-        return capsuleResponseList;
+        User user = userService.findUserByAccessToken(accessToken);
+        return capsuleRepository.findCapsulesByRecipientOrderByCreatedAtDesc(user.getUserId()).stream()
+                .map(CapsuleResponse::toCapsuleResponse)
+                .collect(Collectors.toList());
     }
 
-    public int deleteCapsule(final Long capsuleId,final String accessToken) {
-        Capsule nowCapsule=capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
-        User nowuser=userService.findUserByAccessToken(accessToken);
-        if(nowCapsule.getRecipient().equals(nowuser.getUserId())) {
+    public int deleteCapsule(final Long capsuleId, final String accessToken) {
+        Capsule nowCapsule = capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
+        User nowuser = userService.findUserByAccessToken(accessToken);
+        if (nowCapsule.getRecipient().equals(nowuser.getUserId())) {
             capsuleRepository.deleteById(capsuleId);
+            //TODO 분기 다시 생각하기
             return 200;
         }
         return 401;
@@ -87,13 +85,9 @@ public class CapsuleService {
     }
 
     public List<OpenCapsuleResponse> OpenedCapsule(final String accessToken) {
-        User user=userService.findUserByAccessToken(accessToken);
-        String senderId=user.getUserId();
-        List<OpenCapsuleResponse> capsuleResponseList=new ArrayList<>();
-        List<Capsule> capsuleList=capsuleRepository.findCapsulesBySenderId(senderId);
-        for(Capsule capsule : capsuleList){
-            capsuleResponseList.add(OpenCapsuleResponse.toOpenCapsule(capsule));
-        }
-        return capsuleResponseList;
+        User user = userService.findUserByAccessToken(accessToken);
+        return capsuleRepository.findCapsulesBySenderId(user.getUserId()).stream()
+                .map(OpenCapsuleResponse::toOpenCapsule)
+                .collect(Collectors.toList());
     }
 }

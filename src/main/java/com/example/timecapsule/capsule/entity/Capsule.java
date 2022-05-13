@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+//TODO SET 사용 자제
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
@@ -21,17 +22,17 @@ import java.time.LocalDate;
 public class Capsule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long capsuleId;
-     String capsuleTitle;
-     String capsuleContent;
-     Boolean isOpened;
-     String recipient;
-     String nickname;
+    private Long capsuleId;
+    private String capsuleTitle;
+    private String capsuleContent;
+    private Boolean isOpened;
+    private String recipient;
+    private String nickname;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate duration;
-     Point2D.Double location;
-     String senderId;
-     Boolean locationCheck;
+    private LocalDate duration;
+    private Point2D.Double location;
+    private String senderId;
+    private Boolean locationCheck;
 
 
     @JsonIgnore
@@ -39,8 +40,8 @@ public class Capsule extends BaseEntity {
     @JoinColumn(name = "id")
     public User user;
 
-    public void openCapsule(Capsule capsule){
-        capsule.isOpened=true;
+    public void openCapsule(Capsule capsule) {
+        capsule.isOpened = true;
     }
 
 //    public void addAccount(Account updateAccount) {

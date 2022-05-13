@@ -1,5 +1,6 @@
 package com.example.timecapsule.user.entity;
 
+import com.example.timecapsule.exception.IdException;
 import com.example.timecapsule.user.dto.response.KakaoResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.config.BaseEntity;
@@ -91,4 +92,5 @@ public class User extends BaseEntity implements UserDetails {
                 .userNickname(user.getUserNickname())
                 .build();
     }
+
 }
