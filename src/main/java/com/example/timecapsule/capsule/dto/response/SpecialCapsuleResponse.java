@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.awt.geom.Point2D;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CapsuleResponse {
+public class SpecialCapsuleResponse {
     Long capsuleId;
     String content;
     String nickname;
@@ -25,8 +24,8 @@ public class CapsuleResponse {
     Byte capsuleType;
     Boolean opened;
     String sender;
-    public static CapsuleResponse toCapsuleResponse(Capsule capsule) {
-        return CapsuleResponse.builder()
+    public static SpecialCapsuleResponse toCapsuleResponse(Capsule capsule) {
+        return SpecialCapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
                 .content(capsule.getCapsuleContent())
                 .nickname(capsule.getNickname())

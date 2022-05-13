@@ -4,19 +4,15 @@ package com.example.timecapsule.capsule.dto.request;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.awt.geom.Point2D;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-public class CapsuleRequest {
+public class AnywhereCapsuleRequest {
     String content;
     String nickname;
     String recipient;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime duration;
-    Double latitude;
-    Double longitude;
     Byte capsuleType;
 
 //    public Capsule toCapsule(Account account, LocalDateTime currentDate) {
@@ -46,9 +42,4 @@ public class CapsuleRequest {
 //        capsules.setSenderId(user.getUserId());
 //        return capsules;
 //    }
-public Point2D.Double setLocationFunc(double latitude, double longitude){
-    Point2D.Double now=new Point2D.Double();
-    now.setLocation(latitude,longitude);
-    return now;
-}
 }

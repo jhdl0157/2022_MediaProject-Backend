@@ -39,10 +39,6 @@ public class Capsule extends BaseEntity {
     @JoinColumn(name = "id")
     public User user;
 
-    public void openCapsule(Capsule capsule) {
-        capsule.isOpened = true;
-    }
-
 //    public void addAccount(Account updateAccount) {
 //        this.setAccount(updateAccount);
 //    }

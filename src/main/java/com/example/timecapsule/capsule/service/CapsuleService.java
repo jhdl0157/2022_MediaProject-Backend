@@ -1,8 +1,9 @@
 package com.example.timecapsule.capsule.service;
 
-import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
+import com.example.timecapsule.capsule.dto.request.AnywhereCapsuleRequest;
+import com.example.timecapsule.capsule.dto.request.SpecialCapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
-import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
+import com.example.timecapsule.capsule.dto.response.SpecialCapsuleResponse;
 import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
@@ -29,7 +30,7 @@ public class CapsuleService {
     private static final String RANDOM_NICKNAME_API_URL = "https://bloodgang.shop/api/v1/character";
 
     //캡슐 등록
-    public CapsuleResponse createCapsule(final String accessToken, final CapsuleRequest capsuleRequest) {
+    public SpecialCapsuleResponse createCapsule(final String accessToken, final SpecialCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
 
         Capsule capsule = Capsule.builder()
@@ -44,7 +45,23 @@ public class CapsuleService {
                 .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(), capsuleRequest.getLongitude()))
                 .build();
         capsuleRepository.save(capsule);
-        return CapsuleResponse.toCapsuleResponse(capsule);
+        return SpecialCapsuleResponse.toCapsuleResponse(capsule);
+    }
+
+    public SpecialCapsuleResponse createCapsule(final String accessToken, final AnywhereCapsuleRequest capsuleRequest) {
+        User user = userService.findUserByAccessToken(accessToken);
+        Capsule capsule = Capsule.builder()
+                .user(user)
+                .capsuleContent(capsuleRequest.getContent())
+                .duration(capsuleRequest.getDuration())
+                .isOpened(false)
+                .recipient(capsuleRequest.getRecipient())
+                .nickname(capsuleRequest.getNickname())
+                .capsuleType(capsuleRequest.getCapsuleType())
+                .senderId(user.getUserId())
+                .build();
+        capsuleRepository.save(capsule);
+        return SpecialCapsuleResponse.toCapsuleResponse(capsule);
     }
 
     public String getRandomNickname() {
@@ -55,18 +72,18 @@ public class CapsuleService {
         return responseEntity.getBody().getWord().get(0);
     }
 
-    public CapsuleResponse getDetailCapsule(final Long capsule_id) {
+    public SpecialCapsuleResponse getDetailCapsule(final Long capsule_id) {
         Capsule capsule = capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NOTFOUNDEXCEPTION::new);
         if (!capsule.getIsOpened())
             capsule.setIsOpened(true);
         capsuleRepository.save(capsule);
-        return CapsuleResponse.toCapsuleResponse(capsule);
+        return SpecialCapsuleResponse.toCapsuleResponse(capsule);
     }
 
-    public List<CapsuleResponse> getListCapsule(final String accessToken) {
+    public List<SpecialCapsuleResponse> getListCapsule(final String accessToken) {
         User user = userService.findUserByAccessToken(accessToken);
         return capsuleRepository.findCapsulesByRecipientOrderByCreatedAtDesc(user.getUserId()).stream()
-                .map(CapsuleResponse::toCapsuleResponse)
+                .map(SpecialCapsuleResponse::toCapsuleResponse)
                 .collect(Collectors.toList());
     }
 
