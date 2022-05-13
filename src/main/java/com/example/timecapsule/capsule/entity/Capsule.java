@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.awt.geom.Point2D;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -28,11 +29,9 @@ public class Capsule extends BaseEntity {
     private Boolean isOpened;
     private String recipient;
     private String nickname;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate duration;
+    private LocalDateTime duration;
     private Point2D.Double location;
     private String senderId;
-    private Boolean locationCheck;
 
 
     @JsonIgnore

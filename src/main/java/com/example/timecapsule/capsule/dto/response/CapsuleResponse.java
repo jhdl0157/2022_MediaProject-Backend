@@ -21,7 +21,7 @@ public class CapsuleResponse {
     String content;
     String nickname;
     String recipient;
-    LocalDate duration;
+    LocalDateTime duration;
     Point2D.Double location;
     Boolean opened;
     String sender;

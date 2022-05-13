@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.awt.geom.Point2D;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class CapsuleRequest {
@@ -13,8 +14,8 @@ public class CapsuleRequest {
     String content;
     String nickname;
     String recipient;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate duration;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    LocalDateTime duration;
     Double latitude;
     Double longitude;
 
