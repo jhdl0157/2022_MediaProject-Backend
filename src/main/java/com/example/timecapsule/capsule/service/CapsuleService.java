@@ -39,6 +39,7 @@ public class CapsuleService {
                 .isOpened(false)
                 .recipient(capsuleRequest.getRecipient())
                 .nickname(capsuleRequest.getNickname())
+                .capsuleType(capsuleRequest.getCapsuleType())
                 .senderId(user.getUserId())
                 .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(), capsuleRequest.getLongitude()))
                 .build();

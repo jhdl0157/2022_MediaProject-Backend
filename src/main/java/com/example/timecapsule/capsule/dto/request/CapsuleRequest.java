@@ -17,6 +17,7 @@ public class CapsuleRequest {
     LocalDateTime duration;
     Double latitude;
     Double longitude;
+    Byte capsuleType;
 
 //    public Capsule toCapsule(Account account, LocalDateTime currentDate) {
 //        Capsule capsule=new Capsule();

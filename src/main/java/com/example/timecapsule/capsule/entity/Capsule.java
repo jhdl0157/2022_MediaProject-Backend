@@ -31,6 +31,7 @@ public class Capsule extends BaseEntity {
     private LocalDateTime duration;
     private Point2D.Double location;
     private String senderId;
+    private Byte capsuleType;
 
 
     @JsonIgnore
