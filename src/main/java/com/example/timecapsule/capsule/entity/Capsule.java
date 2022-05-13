@@ -24,7 +24,6 @@ public class Capsule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long capsuleId;
-    private String capsuleTitle;
     private String capsuleContent;
     private Boolean isOpened;
     private String recipient;

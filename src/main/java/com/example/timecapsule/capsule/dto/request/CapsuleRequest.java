@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class CapsuleRequest {
-    String title;
     String content;
     String nickname;
     String recipient;

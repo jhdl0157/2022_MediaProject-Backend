@@ -34,7 +34,6 @@ public class CapsuleService {
 
         Capsule capsule = Capsule.builder()
                 .user(user)
-                .capsuleTitle(capsuleRequest.getTitle())
                 .capsuleContent(capsuleRequest.getContent())
                 .duration(capsuleRequest.getDuration())
                 .isOpened(false)

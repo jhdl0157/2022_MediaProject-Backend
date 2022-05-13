@@ -17,7 +17,6 @@ public class OpenCapsuleResponse {
         return OpenCapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
                 .isOpened(capsule.getIsOpened())
-                .title(capsule.getCapsuleTitle())
                 .nickname(capsule.getNickname())
                 .build();
     }

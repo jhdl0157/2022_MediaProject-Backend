@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CapsuleResponse {
     Long capsuleId;
-    String title;
     String content;
     String nickname;
     String recipient;
@@ -28,7 +27,6 @@ public class CapsuleResponse {
     public static CapsuleResponse toCapsuleResponse(Capsule capsule) {
         return CapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
-                .title(capsule.getCapsuleTitle())
                 .content(capsule.getCapsuleContent())
                 .nickname(capsule.getNickname())
                 .recipient(capsule.getRecipient())
