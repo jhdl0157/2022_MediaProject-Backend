@@ -1,7 +1,5 @@
 package com.example.timecapsule.user.controller;
 
-import com.example.timecapsule.capsule.dto.request.CapsuleRequest;
-import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
 import com.example.timecapsule.main.common.CommonResult;
 import com.example.timecapsule.main.common.SingleResult;
 import com.example.timecapsule.main.common.service.ResponseService;

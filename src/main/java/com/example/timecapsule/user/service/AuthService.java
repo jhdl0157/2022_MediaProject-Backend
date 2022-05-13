@@ -1,10 +1,8 @@
 package com.example.timecapsule.user.service;
 
 
-import com.example.timecapsule.exception.UNAUTHORIZEDException;
+import com.example.timecapsule.exception.UNAUTHORIZEDEXCEPTION;
 import com.example.timecapsule.user.dto.response.KakaoResponse;
-import com.example.timecapsule.user.dto.response.MyAccountResponse;
-import com.example.timecapsule.exception.NotFoundException;
 import com.example.timecapsule.user.dto.response.TokenResponseDto;
 import com.example.timecapsule.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -60,10 +57,10 @@ public class AuthService {
         if (accountForCheck != null) {
             // 기존 회원이라면 존재한다면 Token 값을 갱신하고 반환한다.
             //우리가 만든 jwt를 보내준다.
-            return userService.makeToken(accountForCheck.getUserId());
+            return userService.makeToken(accountForCheck);
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
-            return  userService.makeToken(userService.register(kakaoResponse).getUserId());
+            return  userService.makeToken(userService.register(kakaoResponse));
         }
     }
     public HashMap<String, String> getKakaoTokens(String code) {
@@ -96,7 +93,7 @@ public class AuthService {
             return userInfo.getBody();
         } catch (HttpClientErrorException e){
             log.info("오류: {}",e.getStatusCode());
-            throw new UNAUTHORIZEDException();
+            throw new UNAUTHORIZEDEXCEPTION();
         }
     }
 

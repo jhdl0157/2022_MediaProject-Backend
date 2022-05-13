@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RequiredArgsConstructor
 public class ExceptionAdvice {
     private final ResponseService responseService;
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<CommonResult> NotFoundException(NotFoundException e) {
+    @ExceptionHandler(NOTFOUNDEXCEPTION.class)
+    public ResponseEntity<CommonResult> NotFoundException(NOTFOUNDEXCEPTION e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.NOTFOUND);
         return new ResponseEntity<>(commonResult, HttpStatus.UNAUTHORIZED);
     }
-    @ExceptionHandler(NotFoundUserException.class)
-    public ResponseEntity<CommonResult> NotFoundUserException(NotFoundUserException e) {
+    @ExceptionHandler(NOTFOUNDUSEREXCEPTION.class)
+    public ResponseEntity<CommonResult> NotFoundUserException(NOTFOUNDUSEREXCEPTION e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.NOTFOUND);
         return new ResponseEntity<>(commonResult, HttpStatus.UNAUTHORIZED);
     }
@@ -29,23 +29,23 @@ public class ExceptionAdvice {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.NOT);
         return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }
-    @ExceptionHandler(DuplicateDATAException.class)
-    public ResponseEntity<CommonResult> DuplicateDATAException(DuplicateDATAException e) {
+    @ExceptionHandler(DUPLICATEDATEXCEPTION.class)
+    public ResponseEntity<CommonResult> DuplicateDATAException(DUPLICATEDATEXCEPTION e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.DuplicateDATA);
         return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }
-    @ExceptionHandler(PasswordException.class)
-    public ResponseEntity<CommonResult> PasswordException(PasswordException e) {
+    @ExceptionHandler(PASSWORDEXCEPTION.class)
+    public ResponseEntity<CommonResult> PasswordException(PASSWORDEXCEPTION e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.PASSWORD);
         return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }
-    @ExceptionHandler(IdException.class)
-    public ResponseEntity<CommonResult> PasswordException(IdException e) {
+    @ExceptionHandler(IDEXCEPTION.class)
+    public ResponseEntity<CommonResult> PasswordException(IDEXCEPTION e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.ID);
         return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }
-    @ExceptionHandler(UNAUTHORIZEDException.class)
-    public ResponseEntity<CommonResult> PasswordException(UNAUTHORIZEDException e) {
+    @ExceptionHandler(UNAUTHORIZEDEXCEPTION.class)
+    public ResponseEntity<CommonResult> PasswordException(UNAUTHORIZEDEXCEPTION e) {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.UNAUTHORIZED);
         return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }

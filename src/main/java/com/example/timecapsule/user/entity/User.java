@@ -91,4 +91,5 @@ public class User extends BaseEntity implements UserDetails {
                 .userNickname(user.getUserNickname())
                 .build();
     }
+
 }
