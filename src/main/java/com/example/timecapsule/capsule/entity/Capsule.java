@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 //TODO SET 사용 자제
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
 @Builder
 public class Capsule extends BaseEntity {
