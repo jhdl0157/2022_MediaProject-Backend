@@ -69,7 +69,7 @@ public class CapsuleController {
             return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
         return new ResponseEntity<>(responseService.getFailResult(),HttpStatus.BAD_REQUEST);
     }
-    //보낸 캡슐 읽었는지만 확인
+    //내가 보낸 캡슐 읽었는지만 확인
     @GetMapping("/opening")
     public ResponseEntity<ListResult<OpenCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("X-AUTH-TOKEN") String accessToken){
         return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(accessToken)),HttpStatus.OK);

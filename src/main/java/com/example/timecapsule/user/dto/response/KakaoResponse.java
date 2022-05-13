@@ -1,5 +1,6 @@
 package com.example.timecapsule.user.dto.response;
 
+import com.example.timecapsule.user.entity.User;
 import lombok.Data;
 
 @Data
@@ -33,6 +34,14 @@ public class KakaoResponse {
             private String thumbnail_image_url;
             private String profile_image_url;
         }
+    }
+    public static User of (KakaoResponse kakaoResponse, String password){
+        return User.builder()
+                .userId(kakaoResponse.getId().toString())
+                .userPw(password)
+                .userNickname(kakaoResponse.getProperties().getNickname())
+                .userEmail(kakaoResponse.getKakao_account().getEmail())
+                .build();
     }
 
 }

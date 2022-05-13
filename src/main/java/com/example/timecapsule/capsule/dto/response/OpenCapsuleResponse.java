@@ -9,7 +9,6 @@ import lombok.Data;
 public class OpenCapsuleResponse {
     Long capsuleId;
     Boolean isOpened;
-    String title;
     String nickname;
 
 

@@ -67,29 +67,6 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    public static User of (KakaoResponse kakaoResponse, String password){
-        return User.builder()
-                .userId(kakaoResponse.getId().toString())
-                .userPw(password)
-                .userNickname(kakaoResponse.getProperties().getNickname())
-                .userEmail(kakaoResponse.getKakao_account().getEmail())
-                .build();
-    }
 
-    public static User of(UserRequestDto userRequestDto,String password){
-        return User.builder()
-                .userId(userRequestDto.getUserId())
-                .userPw(password)
-                .userNickname(userRequestDto.getUserNickname())
-                .userEmail(userRequestDto.getUserEmail())
-                .build();
-    }
-
-    public static UserResponseDto toUserResponse (User user){
-        return UserResponseDto.builder()
-                .userId(user.getUserId())
-                .userNickname(user.getUserNickname())
-                .build();
-    }
 
 }

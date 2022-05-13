@@ -27,15 +27,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto register(UserRequestDto userRequestDto) {
-        User user = User.of(userRequestDto, passwordEncoder.encode(userRequestDto.getUserPw()));
+        User user = UserResponseDto.of(userRequestDto, passwordEncoder.encode(userRequestDto.getUserPw()));
         userRepository.save(user);
-        return User.toUserResponse(user);
+        return UserResponseDto.toUserResponse(user);
     }
 
     public User register(KakaoResponse kakaoResponse) {
         if (kakaoResponse.getKakao_account().getEmail() == null || kakaoResponse.getKakao_account().getEmail().equals(""))
             kakaoResponse.getKakao_account().setEmail(kakaoResponse.getId() + "@gmail.com");
-        User user = User.of(kakaoResponse, passwordEncoder.encode(kakaoResponse.getId() + "kakao"));
+        User user = KakaoResponse.of(kakaoResponse, passwordEncoder.encode(kakaoResponse.getId() + "kakao"));
         userRepository.save(user);
         return user;
     }
