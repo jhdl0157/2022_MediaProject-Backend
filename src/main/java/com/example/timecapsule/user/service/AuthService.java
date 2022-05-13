@@ -1,10 +1,8 @@
 package com.example.timecapsule.user.service;
 
 
-import com.example.timecapsule.exception.UNAUTHORIZEDException;
+import com.example.timecapsule.exception.UNAUTHORIZEDEXCEPTION;
 import com.example.timecapsule.user.dto.response.KakaoResponse;
-import com.example.timecapsule.user.dto.response.MyAccountResponse;
-import com.example.timecapsule.exception.NotFoundException;
 import com.example.timecapsule.user.dto.response.TokenResponseDto;
 import com.example.timecapsule.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -96,7 +93,7 @@ public class AuthService {
             return userInfo.getBody();
         } catch (HttpClientErrorException e){
             log.info("오류: {}",e.getStatusCode());
-            throw new UNAUTHORIZEDException();
+            throw new UNAUTHORIZEDEXCEPTION();
         }
     }
 

@@ -1,6 +1,6 @@
 package com.example.timecapsule.user.service;
 
-import com.example.timecapsule.exception.NotFoundException;
+import com.example.timecapsule.exception.NOTFOUNDEXCEPTION;
 import com.example.timecapsule.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +16,6 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         return userRepository.findUserByUserId(userId)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(NOTFOUNDEXCEPTION::new);
     }
 }

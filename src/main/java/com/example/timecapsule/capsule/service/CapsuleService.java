@@ -6,7 +6,7 @@ import com.example.timecapsule.capsule.dto.response.CapsuleResponse;
 import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
-import com.example.timecapsule.exception.NotFoundException;
+import com.example.timecapsule.exception.NOTFOUNDEXCEPTION;
 import com.example.timecapsule.user.entity.User;
 import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +56,7 @@ public class CapsuleService {
     }
 
     public CapsuleResponse getDetailCapsule(final Long capsule_id) {
-        Capsule capsule = capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NotFoundException::new);
+        Capsule capsule = capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NOTFOUNDEXCEPTION::new);
         if (!capsule.getIsOpened())
             capsule.setIsOpened(true);
         capsuleRepository.save(capsule);
@@ -73,7 +71,7 @@ public class CapsuleService {
     }
 
     public int deleteCapsule(final Long capsuleId, final String accessToken) {
-        Capsule nowCapsule = capsuleRepository.findById(capsuleId).orElseThrow(NotFoundException::new);
+        Capsule nowCapsule = capsuleRepository.findById(capsuleId).orElseThrow(NOTFOUNDEXCEPTION::new);
         User nowuser = userService.findUserByAccessToken(accessToken);
         if (nowCapsule.getRecipient().equals(nowuser.getUserId())) {
             capsuleRepository.deleteById(capsuleId);

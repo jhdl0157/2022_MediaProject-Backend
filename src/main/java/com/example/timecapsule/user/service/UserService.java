@@ -43,20 +43,20 @@ public class UserService {
     public void isUserIdDuplicated(String userId) {
         log.info("UserService.isUserIdDuplicated");
         if (userRepository.findUserByUserId(userId).isPresent()) {
-            throw new DuplicateDATAException();
+            throw new DUPLICATEDATEXCEPTION();
         }
     }
 
     public void isUserNicknameDuplicated(String userNickname) {
         if (userRepository.findUserByUserNickname(userNickname).isPresent()) {
-            throw new DuplicateDATAException();
+            throw new DUPLICATEDATEXCEPTION();
         }
     }
 
     public TokenResponseDto login(UserRequestDto userRequestDto) throws Exception {
-        User user = userRepository.findUserByUserId(userRequestDto.getUserId()).orElseThrow(IdException::new);
+        User user = userRepository.findUserByUserId(userRequestDto.getUserId()).orElseThrow(IDEXCEPTION::new);
         if (!passwordEncoder.matches(userRequestDto.getUserPw(), user.getUserPw())) {
-            throw new PasswordException();
+            throw new PASSWORDEXCEPTION();
         }
         return makeToken(user);
     }
@@ -85,7 +85,7 @@ public class UserService {
 //        jwtTokenProvider.getUserInfoFromToken(accessToken);
 //        Auth auth=authRepository.findAuthByAccessToken(accessToken);
         log.info("유저의 정보는 : {}", jwtTokenProvider.getUserInfoFromToken(accessToken));
-        return userRepository.findUserByUserId(jwtTokenProvider.getUserInfoFromToken(accessToken)).orElseThrow(NotFoundException::new);
+        return userRepository.findUserByUserId(jwtTokenProvider.getUserInfoFromToken(accessToken)).orElseThrow(NOTFOUNDEXCEPTION::new);
     }
 
     public User findUserByUserEmail(String email) {
@@ -99,7 +99,7 @@ public class UserService {
         if (nowuser.getId().equals(userId)) {
             userRepository.deleteById(userId);
         } else {
-            throw new IdException();
+            throw new IDEXCEPTION();
         }
     }
 
