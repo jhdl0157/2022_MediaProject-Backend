@@ -9,7 +9,6 @@ import lombok.Data;
 public class OpenCapsuleResponse {
     Long capsuleId;
     Boolean isOpened;
-    String title;
     String nickname;
 
 
@@ -17,7 +16,6 @@ public class OpenCapsuleResponse {
         return OpenCapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
                 .isOpened(capsule.getIsOpened())
-                .title(capsule.getCapsuleTitle())
                 .nickname(capsule.getNickname())
                 .build();
     }

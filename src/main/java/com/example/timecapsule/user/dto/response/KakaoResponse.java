@@ -1,6 +1,6 @@
-package com.example.timecapsule.account.dto.response;
+package com.example.timecapsule.user.dto.response;
 
-import com.example.timecapsule.account.entity.Account;
+import com.example.timecapsule.user.entity.User;
 import lombok.Data;
 
 @Data
@@ -35,15 +35,13 @@ public class KakaoResponse {
             private String profile_image_url;
         }
     }
-
-    public Account toAccount(String accessToken) {
-        Account account = new Account();
-        if (this.kakao_account.email == null || this.kakao_account.email.equals(""))
-            account.setAccountEmail(String.valueOf(this.id));
-        else account.setAccountEmail(this.kakao_account.email);
-        account.setProfileNickname(this.properties.nickname);
-        account.setAccessToken(accessToken);
-        account.setKakaoId(this.id);
-        return account;
+    public static User of (KakaoResponse kakaoResponse, String password){
+        return User.builder()
+                .userId(kakaoResponse.getId().toString())
+                .userPw(password)
+                .userNickname(kakaoResponse.getProperties().getNickname())
+                .userEmail(kakaoResponse.getKakao_account().getEmail())
+                .build();
     }
+
 }

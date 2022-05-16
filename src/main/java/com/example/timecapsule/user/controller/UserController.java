@@ -60,5 +60,13 @@ public class UserController {
         System.out.println("userIdFromToken = " + userIdFromToken);
         return "hi";
     }
+    @DeleteMapping("/delete/{user_id}")
+    public ResponseEntity<CommonResult> deleteId(
+            @RequestHeader("X-AUTH-TOKEN") String accessToken,
+            @PathVariable Long user_id
+    ){
+        userService.deleteUser(user_id,accessToken);
+        return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
+    }
 
 }
