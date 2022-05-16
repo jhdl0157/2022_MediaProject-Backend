@@ -36,7 +36,7 @@ out/
 
 build/reports/tests
 application.yml
-src/application.properties
+application.properties
 *.DS_Store
 build/reports/tests/test/packages/com.example.timecapsule.html
 build/reports/tests/test/index.html
