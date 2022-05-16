@@ -46,7 +46,7 @@ public class AuthService {
     }
 
     public TokenResponseDto getKakaoLogin(final String token) {
-       //HashMap<String, String> kakaoTokens = getKakaoTokens(token);
+        //HashMap<String, String> kakaoTokens = getKakaoTokens(token);
         KakaoResponse kakaoResponse = getKakaoUserInfo(token);
 
         String accountEmail = kakaoResponse.getKakao_account().getEmail();
@@ -61,10 +61,11 @@ public class AuthService {
             return userService.issueToken(accountForCheck.getUserId());
         } else {
             // 존재하지 않는다면 회원 가입 시키고 반환한다.
-            return  userService.issueToken(userService.register(kakaoResponse).getUserId());
+            return userService.issueToken(userService.register(kakaoResponse).getUserId());
 
+        }
     }
-    public HashMap<String, String> getKakaoTokens(String code) {
+    public HashMap<String, String> getKakaoTokens (String code){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -82,7 +83,7 @@ public class AuthService {
 
         return tokenResEntity.getBody();
     }
-    public KakaoResponse getKakaoUserInfo(final String accessToken) {
+    public KakaoResponse getKakaoUserInfo ( final String accessToken){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -92,10 +93,9 @@ public class AuthService {
         try {
             ResponseEntity<KakaoResponse> userInfo = restTemplate.exchange(kakaoUserInfoUrl, HttpMethod.GET, kakaoUserInfoReq, KakaoResponse.class);
             return userInfo.getBody();
-        } catch (HttpClientErrorException e){
-            log.info("오류: {}",e.getStatusCode());
+        } catch (HttpClientErrorException e) {
+            log.info("오류: {}", e.getStatusCode());
             throw new UNAUTHORIZEDEXCEPTION();
         }
     }
-
 }

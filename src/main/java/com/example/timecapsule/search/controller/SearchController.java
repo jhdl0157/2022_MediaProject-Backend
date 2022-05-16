@@ -19,16 +19,15 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @Slf4j
-//@RequestMapping("/api/search")
 public class SearchController {
-    private SearchService searchService;
-    private ResponseService responseService;
+    //private SearchService searchService;
+    //private ResponseService responseService;
 
     @GetMapping("/api/search")
     public ResponseEntity<ListResult<UserSearchResponseDto>> getUsersByNicknameKeyword(@RequestParam String keyword){
-        log.info("entered controller");
-        List<UserSearchResponseDto> usersWithKeyword = searchService.getAllUsersWithKeyword(keyword);
-        return new ResponseEntity<>(responseService.getListResult(usersWithKeyword), HttpStatus.OK);
+        //List<UserSearchResponseDto> usersWithKeyword = searchService.getAllUsersWithKeyword(keyword);
+        //return new ResponseEntity<>(responseService.getListResult(usersWithKeyword), HttpStatus.OK);
+        return null;
     }
 
 }
