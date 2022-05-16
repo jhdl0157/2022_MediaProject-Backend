@@ -12,6 +12,8 @@ import com.example.timecapsule.user.jwt.JwtTokenProvider;
 import com.example.timecapsule.user.repository.AuthRepository;
 import com.example.timecapsule.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class UserService {
     private final UserRepository userRepository;

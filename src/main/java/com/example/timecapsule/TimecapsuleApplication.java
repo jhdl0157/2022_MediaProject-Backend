@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableAsync
-//@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 public class TimecapsuleApplication {
 
     public static void main(String[] args) {
