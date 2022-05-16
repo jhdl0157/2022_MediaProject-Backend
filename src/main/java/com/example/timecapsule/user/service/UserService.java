@@ -81,9 +81,11 @@ public class UserService {
             authRepository.save(auth);
         }
 
+        User userFromRepository = userRepository.findUserByUserId(userid).orElseThrow(IDEXCEPTION::new);
+
         return TokenResponseDto.builder()
-                .userId(user.getId())
-                .userNickname(user.getUserNickname())
+                .userId(userFromRepository.getId())
+                .userNickname(userFromRepository.getUserNickname())
                 .ACCESS_TOKEN(accessToken)
                 .REFRESH_TOKEN(refreshToken)
                 .build();

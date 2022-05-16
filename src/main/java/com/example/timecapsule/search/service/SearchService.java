@@ -17,12 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 @Service
 public class SearchService {
-    @Autowired
     private UserRepository userRepository;
     private UserSearchResponseDto userSearchResponseDto;
 
     public List<UserSearchResponseDto> getAllUsersWithKeyword(String keyword){
-        log.info("entered service");
         List<User> allUser = userRepository.findAll();
         List<UserSearchResponseDto> returnList = new ArrayList<UserSearchResponseDto>();
         for (User user : allUser){
