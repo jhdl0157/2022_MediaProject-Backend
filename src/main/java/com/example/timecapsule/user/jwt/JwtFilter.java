@@ -29,15 +29,18 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException{
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         String tokenFromHeader = httpServletRequest.getHeader("X-AUTH-TOKEN");
-        //log.info("TOKEN FROM HEADER:" + tokenFromHeader);
+        log.info("TOKEN FROM HEADER:" + tokenFromHeader);
 
         //토큰 유효
         if (tokenFromHeader != null && jwtTokenProvider.validateToken(tokenFromHeader)){
-            //토큰으로 정보 받기
-            log.info("in");
             Authentication authentication = jwtTokenProvider.getAuthentication(tokenFromHeader);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        //토큰 만료
+//        else if (!jwtTokenProvider.validateToken(tokenFromHeader)){
+//            log.info("토큰이 만료됨");
+//
+//        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

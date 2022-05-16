@@ -42,8 +42,6 @@ public class KakaoResponse {
             account.setAccountEmail(String.valueOf(this.id));
         else account.setAccountEmail(this.kakao_account.email);
         account.setProfileNickname(this.properties.nickname);
-        account.setUserName(this.kakao_account.profile.nickname);
-        account.setProfileImageUrl(this.kakao_account.profile.profile_image_url);
         account.setAccessToken(accessToken);
         account.setKakaoId(this.id);
         return account;

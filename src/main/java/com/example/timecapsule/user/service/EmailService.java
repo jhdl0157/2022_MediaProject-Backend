@@ -15,8 +15,9 @@ import java.util.Random;
 @Service
 @Slf4j
 public class EmailService {
+    //Todo 이메일 인증 코드가 static이여서 어떤 이메일을 입력해도 같은 값만 출력
     private final JavaMailSender emailSender;
-    public static final String emailAuthCode = createKey();
+    public final static String emailAuthCode = createKey();
 
     private MimeMessage createMessage(String recipient)throws Exception{
         log.info("TO : "+ recipient);
@@ -52,6 +53,7 @@ public class EmailService {
         }
         return key.toString();
     }
+
     @Async
     public void sendSimpleMessage(String recipient)throws Exception {
         MimeMessage message = createMessage(recipient);

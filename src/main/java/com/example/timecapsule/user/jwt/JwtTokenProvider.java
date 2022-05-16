@@ -1,28 +1,21 @@
 package com.example.timecapsule.user.jwt;
 
-import com.example.timecapsule.user.entity.User;
+import com.example.timecapsule.user.dto.response.TokenResponseDto;
+import com.example.timecapsule.user.entity.Auth;
+import com.example.timecapsule.user.repository.AuthRepository;
 import io.jsonwebtoken.*;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,10 +26,11 @@ public class JwtTokenProvider {
     @Value("${secret.refresh}")
     private String REFRESH_KEY;// = "ref";
 
-    private final long ACCESS_TOKEN_VALID_TIME = 1 * 60 * 1000L;   // 1분
+    private final long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;   // 30분
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
 
     private final UserDetailsService userDetailsService;
+    private AuthRepository authRepository;
 
     @PostConstruct
     protected void init() {
@@ -60,7 +54,7 @@ public class JwtTokenProvider {
 
     public String createRefreshToken(String userId) {
         Claims claims = Jwts.claims();
-        claims.put("userId", userId); //
+        claims.put("userId", userId); //load userId
         Date now = new Date();
         Date expiration = new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME);
 
@@ -74,11 +68,14 @@ public class JwtTokenProvider {
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
-            //log.info("EXPIRATION:" + claims.getBody().getExpiration());
+
+            //System.out.println("claims.getBody :" + claims.getBody());
+            //claims.getBody : {userId=lee, iat=1652106416, exp=1652108216}
             return !claims.getBody().getExpiration().before(new Date()); }
-        catch (Exception e) {
-            //TODO 예외처리 하기
-            return false; }
+        catch (ExpiredJwtException e) {
+            log.info("만료된 JWT token");
+        }
+        return false;
     }
 
     public String getUserInfoFromToken(String token){
@@ -89,6 +86,28 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token){
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUserInfoFromToken(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public TokenResponseDto reissueToken(TokenResponseDto tokenResponseDto, String token){
+        //do not need to reissue token
+        if(validateToken(tokenResponseDto.getACCESS_TOKEN())) {
+            throw new IllegalArgumentException();
+        }
+
+        String userIdFromToken = getUserInfoFromToken(token);
+
+        //only if access token is expired and validated
+        if(getUserInfoFromToken(tokenResponseDto.getACCESS_TOKEN()).equals(userIdFromToken)){
+            Auth authFromRepo = authRepository.findAuthByUserId(getUserInfoFromToken(userIdFromToken));
+            String refreshTokenFromRepo = authFromRepo.getRefreshToken();
+            //refresh token is validated
+            if (refreshTokenFromRepo.equals(tokenResponseDto.getREFRESH_TOKEN())){
+                String newRefreshToken = createRefreshToken(userIdFromToken);
+                authRepository.updateAuth(userIdFromToken, newRefreshToken);
+                return new TokenResponseDto(refreshTokenFromRepo, newRefreshToken);
+            }
+        }
+        return new TokenResponseDto("","");
     }
 
 }
