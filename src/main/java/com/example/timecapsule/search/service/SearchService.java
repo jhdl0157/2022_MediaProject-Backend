@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,6 +26,11 @@ public class SearchService {
             }
         }
         return returnList;
+    }
+    //Stream 사용
+    public List<UserSearchResponseDto> searchNickname(String keyword){
+        log.info("Search Service: searchNickname success");
+        return userRepository.findByUserNicknameContainsIgnoreCase(keyword).stream().map(UserSearchResponseDto::toUserSearchResponseDto).collect(Collectors.toList());
     }
 
 }
