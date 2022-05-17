@@ -12,7 +12,7 @@ public class UserSearchResponseDto {
     private Long id;
     private String userNickname;
 
-    public UserSearchResponseDto toUserSearchResponseDto(User user){
+    public static UserSearchResponseDto toUserSearchResponseDto(User user){
         return UserSearchResponseDto.builder()
                 .id(user.getId())
                 .userNickname(user.getUserNickname())
