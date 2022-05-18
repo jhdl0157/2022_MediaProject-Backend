@@ -18,7 +18,7 @@ public class SpecialCapsuleResponse {
     Long capsuleId;
     String content;
     String nickname;
-    String recipient;
+    Long recipient;
     LocalDateTime duration;
     Point2D.Double location;
     Byte capsuleType;

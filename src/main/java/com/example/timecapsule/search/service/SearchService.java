@@ -30,7 +30,7 @@ public class SearchService {
     //Stream 사용
     public List<UserSearchResponseDto> searchNickname(String keyword){
         log.info("Search Service: searchNickname success");
-        return userRepository.findByUserNicknameContainsIgnoreCase(keyword).stream().map(UserSearchResponseDto::toUserSearchResponseDto).collect(Collectors.toList());
+        return userRepository.findByUserNicknameContainsIgnoreCase(keyword.replace(" ","")).stream().map(UserSearchResponseDto::toUserSearchResponseDto).collect(Collectors.toList());
     }
 
 }
