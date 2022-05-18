@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class AnywhereCapsuleRequest {
     String content;
     String nickname;
-    String recipient;
+    Long recipient;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime duration;
     Byte capsuleType;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class SpecialCapsuleRequest {
     String content;
     String nickname;
-    String recipient;
+    Long recipient;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime duration;
     Double latitude;
