@@ -14,7 +14,7 @@ public interface AuthRepository extends JpaRepository<Auth, Long> {
     Auth findAuthByUserId(String userId);
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE Auth SET accessToken= :access, refreshToken= :refresh WHERE userId= :userId")
+    @Query("UPDATE Auth SET refreshToken= :refresh WHERE userId= :userId")
     Integer updateAuth(@Param("userId") String userId, @Param("refresh") String refresh);
     //TODO update time 반영안됨
 }
