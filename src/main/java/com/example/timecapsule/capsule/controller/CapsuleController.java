@@ -1,6 +1,7 @@
 package com.example.timecapsule.capsule.controller;
 
 import com.example.timecapsule.capsule.dto.request.AnywhereCapsuleRequest;
+import com.example.timecapsule.capsule.dto.request.LocationRequest;
 import com.example.timecapsule.capsule.dto.request.SpecialCapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.SpecialCapsuleResponse;
 import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
@@ -73,6 +74,12 @@ public class CapsuleController {
     @GetMapping("/opening")
     public ResponseEntity<ListResult<OpenCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("X-AUTH-TOKEN") String accessToken){
         return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(accessToken)),HttpStatus.OK);
+    }
+    @GetMapping("/locationCheck")
+    public ResponseEntity<SingleResult<Boolean>> checkLocation(
+            @RequestBody LocationRequest locationRequest)
+    {
+        return new ResponseEntity<>(responseService.getSingleResult(capsuleService.check(locationRequest)),HttpStatus.OK);
     }
 
 }
