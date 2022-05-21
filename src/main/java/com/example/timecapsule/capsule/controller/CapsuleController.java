@@ -28,14 +28,14 @@ public class CapsuleController {
     @PostMapping("/special")
     public ResponseEntity<SingleResult<SpecialCapsuleResponse>> postSpecialCapsule(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
-            @RequestPart(value = "specialCapsule") SpecialCapsuleRequest capsuleRequest
+            @RequestBody SpecialCapsuleRequest capsuleRequest
     ){
         return new ResponseEntity<>(responseService.getSingleResult(capsuleService.createCapsule(accessToken,capsuleRequest)), HttpStatus.CREATED);
     }
     @PostMapping("/anywhere")
     public ResponseEntity<SingleResult<SpecialCapsuleResponse>> postAnywhereCapsule(
             @RequestHeader("X-AUTH-TOKEN") String accessToken,
-            @RequestPart(value = "anywhereCapsule") AnywhereCapsuleRequest capsuleRequest
+            @RequestBody AnywhereCapsuleRequest capsuleRequest
     ){
         return new ResponseEntity<>(responseService.getSingleResult(capsuleService.createCapsule(accessToken,capsuleRequest)), HttpStatus.CREATED);
     }
