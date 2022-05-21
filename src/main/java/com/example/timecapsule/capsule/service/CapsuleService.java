@@ -1,6 +1,7 @@
 package com.example.timecapsule.capsule.service;
 
 import com.example.timecapsule.capsule.dto.request.AnywhereCapsuleRequest;
+import com.example.timecapsule.capsule.dto.request.LocationRequest;
 import com.example.timecapsule.capsule.dto.request.SpecialCapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
 import com.example.timecapsule.capsule.dto.response.SpecialCapsuleResponse;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,5 +106,28 @@ public class CapsuleService {
         return capsuleRepository.findCapsulesBySenderId(user.getUserId()).stream()
                 .map(OpenCapsuleResponse::toOpenCapsule)
                 .collect(Collectors.toList());
+    }
+
+    public Boolean check(LocationRequest locationRequest) {
+        Capsule capsule=capsuleRepository.findById(locationRequest.getCapsuleId()).orElseThrow(NOTFOUNDEXCEPTION::new);
+        double distance=distance(locationRequest.getLatitude(),locationRequest.getLongitude(),capsule.getLocation().getX(),capsule.getLocation().getY());
+        if(distance<=300.0) return true;
+        return false;
+    }
+
+    private static double distance(double lat1, double lon1, double lat2, double lon2) {
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        return (dist * 60 * 1.1515*1609.344);
+    }
+    private static double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+    private static double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
     }
 }
