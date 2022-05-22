@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final UserService userService;
-    private static final String RANDOM_NICKNAME_API_URL = "https://bloodgang.shop/api/v1/character";
+    private static final String RANDOM_NICKNAME_API_URL = "http://ec2-13-124-217-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/character";
 
     //캡슐 등록
     public SpecialCapsuleResponse createCapsule(final String accessToken, final SpecialCapsuleRequest capsuleRequest) {
