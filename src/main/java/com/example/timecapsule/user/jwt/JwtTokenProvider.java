@@ -68,14 +68,13 @@ public class JwtTokenProvider {
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
-
-            //System.out.println("claims.getBody :" + claims.getBody());
             //claims.getBody : {userId=lee, iat=1652106416, exp=1652108216}
-            return !claims.getBody().getExpiration().before(new Date()); }
-        catch (ExpiredJwtException e) {
-            log.info("만료된 JWT token");
+            return !claims.getBody().getExpiration().before(new Date());
         }
-        return false;
+        catch (ExpiredJwtException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public String getUserInfoFromToken(String token){
