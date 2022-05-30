@@ -26,7 +26,7 @@ public class JwtTokenProvider {
     @Value("${secret.refresh}")
     private String REFRESH_KEY;// = "ref";
 
-    private final long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;   // 30분
+    private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 24 * 1000L;   // 24시간
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
 
     private final UserDetailsService userDetailsService;

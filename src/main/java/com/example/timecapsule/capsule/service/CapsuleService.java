@@ -10,6 +10,7 @@ import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
 import com.example.timecapsule.exception.NOTFOUNDEXCEPTION;
 import com.example.timecapsule.user.entity.User;
+import com.example.timecapsule.user.repository.UserRepository;
 import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,18 +30,19 @@ import java.util.stream.Collectors;
 public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
     private static final String RANDOM_NICKNAME_API_URL = "http://ec2-13-124-217-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/character";
 
     //캡슐 등록
     public SpecialCapsuleResponse createCapsule(final String accessToken, final SpecialCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
-
+        User touser=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
         Capsule capsule = Capsule.builder()
                 .user(user)
                 .capsuleContent(capsuleRequest.getContent())
                 .duration(capsuleRequest.getDuration())
                 .isOpened(false)
-                .recipient(capsuleRequest.getRecipient())
+                .recipient(touser.getUserNickname())
                 .nickname(capsuleRequest.getNickname())
                 .capsuleType(capsuleRequest.getCapsuleType())
                 .senderId(user.getUserId())
@@ -52,12 +54,13 @@ public class CapsuleService {
 
     public SpecialCapsuleResponse createCapsule(final String accessToken, final AnywhereCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
+        User touser=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
         Capsule capsule = Capsule.builder()
                 .user(user)
                 .capsuleContent(capsuleRequest.getContent())
                 .duration(capsuleRequest.getDuration())
                 .isOpened(false)
-                .recipient(capsuleRequest.getRecipient())
+                .recipient(touser.getUserNickname())
                 .nickname(capsuleRequest.getNickname())
                 .capsuleType(capsuleRequest.getCapsuleType())
                 .senderId(user.getUserId())
@@ -81,6 +84,7 @@ public class CapsuleService {
         capsuleRepository.save(capsule);
         return SpecialCapsuleResponse.toCapsuleResponse(capsule);
     }
+
 
     public List<SpecialCapsuleResponse> getListCapsule(final String accessToken) {
         User user = userService.findUserByAccessToken(accessToken);

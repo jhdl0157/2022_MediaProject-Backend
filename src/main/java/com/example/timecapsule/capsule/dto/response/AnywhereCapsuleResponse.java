@@ -18,7 +18,7 @@ public class AnywhereCapsuleResponse {
     Long capsuleId;
     String content;
     String nickname;
-    Long recipient;
+    String recipient;
     LocalDateTime duration;
     Point2D.Double location;
     Byte capsuleType;
