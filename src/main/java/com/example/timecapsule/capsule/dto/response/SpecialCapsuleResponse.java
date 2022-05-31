@@ -23,7 +23,7 @@ public class SpecialCapsuleResponse {
     Point2D.Double location;
     Byte capsuleType;
     Boolean opened;
-    String sender;
+
     public static SpecialCapsuleResponse toCapsuleResponse(Capsule capsule) {
         return SpecialCapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
@@ -33,7 +33,6 @@ public class SpecialCapsuleResponse {
                 .duration(capsule.getDuration())
                 .location(capsule.getLocation())
                 .capsuleType(capsule.getCapsuleType())
-                .sender(capsule.getSenderId())
                 .opened(capsule.getIsOpened())
                 .build();
     }

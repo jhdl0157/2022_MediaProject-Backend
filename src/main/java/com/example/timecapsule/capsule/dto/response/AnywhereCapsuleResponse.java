@@ -23,7 +23,6 @@ public class AnywhereCapsuleResponse {
     Point2D.Double location;
     Byte capsuleType;
     Boolean opened;
-    String sender;
     public static AnywhereCapsuleResponse toCapsuleResponse(Capsule capsule) {
         return AnywhereCapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
@@ -33,7 +32,6 @@ public class AnywhereCapsuleResponse {
                 .duration(capsule.getDuration())
                 .location(capsule.getLocation())
                 .capsuleType(capsule.getCapsuleType())
-                .sender(capsule.getSenderId())
                 .opened(capsule.getIsOpened())
                 .build();
     }

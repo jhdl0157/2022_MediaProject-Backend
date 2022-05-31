@@ -72,7 +72,7 @@ public class CapsuleController {
     }
     //내가 보낸 캡슐 읽었는지만 확인
     @GetMapping("/opening")
-    public ResponseEntity<ListResult<OpenCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("X-AUTH-TOKEN") String accessToken){
+    public ResponseEntity<ListResult<SpecialCapsuleResponse>> getOpenInfoCapsule(@RequestHeader("X-AUTH-TOKEN") String accessToken){
         return new ResponseEntity<>(responseService.getListResult(capsuleService.OpenedCapsule(accessToken)),HttpStatus.OK);
     }
     @GetMapping("/locationCheck")

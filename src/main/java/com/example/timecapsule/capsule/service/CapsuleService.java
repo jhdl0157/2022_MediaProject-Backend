@@ -31,18 +31,19 @@ public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    private static final String RANDOM_NICKNAME_API_URL = "http://ec2-13-124-217-236.ap-northeast-2.compute.amazonaws.com:8080/api/v1/character";
+    private static final String RANDOM_NICKNAME_API_URL = "http://http://bloodgang.shop:8080/api/v1/character";
 
     //캡슐 등록
     public SpecialCapsuleResponse createCapsule(final String accessToken, final SpecialCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
-        User touser=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
+        User recipient=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
         Capsule capsule = Capsule.builder()
                 .user(user)
                 .capsuleContent(capsuleRequest.getContent())
                 .duration(capsuleRequest.getDuration())
                 .isOpened(false)
-                .recipient(touser.getUserNickname())
+                .recipient(recipient.getUserNickname())
+                .recipientId(recipient.getId())
                 .nickname(capsuleRequest.getNickname())
                 .capsuleType(capsuleRequest.getCapsuleType())
                 .senderId(user.getUserId())
@@ -54,13 +55,14 @@ public class CapsuleService {
 
     public SpecialCapsuleResponse createCapsule(final String accessToken, final AnywhereCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
-        User touser=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
+        User recipient=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
         Capsule capsule = Capsule.builder()
                 .user(user)
                 .capsuleContent(capsuleRequest.getContent())
                 .duration(capsuleRequest.getDuration())
                 .isOpened(false)
-                .recipient(touser.getUserNickname())
+                .recipient(recipient.getUserNickname())
+                .recipientId(recipient.getId())
                 .nickname(capsuleRequest.getNickname())
                 .capsuleType(capsuleRequest.getCapsuleType())
                 .senderId(user.getUserId())
@@ -88,7 +90,7 @@ public class CapsuleService {
 
     public List<SpecialCapsuleResponse> getListCapsule(final String accessToken) {
         User user = userService.findUserByAccessToken(accessToken);
-        return capsuleRepository.findCapsulesByRecipientOrderByCreatedAtDesc(user.getId()).stream()
+        return capsuleRepository.findCapsulesByRecipientIdOrderByCreatedAtDesc(user.getId()).stream()
                 .map(SpecialCapsuleResponse::toCapsuleResponse)
                 .collect(Collectors.toList());
     }
@@ -105,10 +107,10 @@ public class CapsuleService {
 
     }
 
-    public List<OpenCapsuleResponse> OpenedCapsule(final String accessToken) {
+    public List<SpecialCapsuleResponse> OpenedCapsule(final String accessToken) {
         User user = userService.findUserByAccessToken(accessToken);
         return capsuleRepository.findCapsulesBySenderId(user.getUserId()).stream()
-                .map(OpenCapsuleResponse::toOpenCapsule)
+                .map(SpecialCapsuleResponse::toCapsuleResponse)
                 .collect(Collectors.toList());
     }
 
