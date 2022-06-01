@@ -31,7 +31,7 @@ public class CapsuleService {
     private final CapsuleRepository capsuleRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    private static final String RANDOM_NICKNAME_API_URL = "http://http://bloodgang.shop:8080/api/v1/character";
+    private static final String RANDOM_NICKNAME_API_URL = "http://bloodgang.shop:8080/api/v1/character";
 
     //캡슐 등록
     public SpecialCapsuleResponse createCapsule(final String accessToken, final SpecialCapsuleRequest capsuleRequest) {
