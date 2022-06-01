@@ -17,9 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.net.ConnectException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,9 +78,16 @@ public class CapsuleService {
     public String getRandomNickname() {
         RestTemplate restTemplate = new RestTemplate();
         String fooResourceUrl = RANDOM_NICKNAME_API_URL;
-        ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
-        log.info(responseEntity.getBody().getWord().get(0));
-        return responseEntity.getBody().getWord().get(0);
+        try {
+            ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
+            log.info(responseEntity.getBody().getWord().get(0));
+            return responseEntity.getBody().getWord().get(0);
+        }catch (HttpClientErrorException e){
+            throw new NOTFOUNDEXCEPTION();
+        }catch (RestClientException e){
+            e.printStackTrace();
+            throw new NOTFOUNDEXCEPTION();
+        }
     }
 
     public SpecialCapsuleResponse getDetailCapsule(final Long capsule_id) {
