@@ -1,5 +1,6 @@
 package com.example.timecapsule.config;
 
+import com.example.timecapsule.user.jwt.JwtExceptionFilter;
 import com.example.timecapsule.user.jwt.JwtFilter;
 import com.example.timecapsule.user.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtFilter jwtFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,8 +38,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test", "main/*","api/capsule/*", "api/search/*").authenticated()
                 .anyRequest().permitAll()
                 .and()
+                .exceptionHandling()
+                .and()
                 .addFilterBefore(jwtFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtFilter.class);
     }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {

@@ -49,4 +49,5 @@ public class ExceptionAdvice {
         CommonResult commonResult = responseService.getFailResult(CommonResponse.UNAUTHORIZED);
         return new ResponseEntity<>(commonResult, HttpStatus.EXPECTATION_FAILED);
     }
+
 }

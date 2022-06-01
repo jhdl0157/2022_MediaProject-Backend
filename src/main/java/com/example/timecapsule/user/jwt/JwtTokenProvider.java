@@ -1,7 +1,5 @@
 package com.example.timecapsule.user.jwt;
 
-import com.example.timecapsule.user.dto.response.TokenResponseDto;
-import com.example.timecapsule.user.entity.Auth;
 import com.example.timecapsule.user.repository.AuthRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
 
@@ -26,7 +25,7 @@ public class JwtTokenProvider {
     @Value("${secret.refresh}")
     private String REFRESH_KEY;// = "ref";
 
-    private final long ACCESS_TOKEN_VALID_TIME = 30 * 60 * 1000L;   // 30분
+    private final long ACCESS_TOKEN_VALID_TIME = 60 * 60 * 24 * 1000L;   // 24시간
     private final long REFRESH_TOKEN_VALID_TIME = 60 * 60 * 24 * 7 * 1000L;   // 1주
 
     private final UserDetailsService userDetailsService;
@@ -65,21 +64,46 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, REFRESH_KEY)
                 .compact();
     }
-    public boolean validateToken(String jwtToken) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
-            //claims.getBody : {userId=lee, iat=1652106416, exp=1652108216}
-            return !claims.getBody().getExpiration().before(new Date());
-        }
-        catch (ExpiredJwtException e) {
-            e.printStackTrace();
-            throw e;
-        }
+//    public boolean validateToken(String jwtToken) {
+//        Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+//        return !claims.getBody().getExpiration().before(new Date());
+////        try {
+////            Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+////            //claims.getBody : {userId=lee, iat=1652106416, exp=1652108216}
+////            return !claims.getBody().getExpiration().before(new Date());
+////        }
+////        catch (ExpiredJwtException e) {
+////            //e.printStackTrace();
+////            throw e;
+////        }
+//    }
+    public Jws<Claims> validateToken(HttpServletRequest request, String jwtToken){
+        Jws<Claims> claims = null;
+//        try{
+//            claims =  Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
+//        }catch(ExpiredJwtException e){
+//            request.setAttribute("exception", -2);
+//        }catch(JwtException e){
+//            request.setAttribute("exception", -4);
+//        }
+//        return claims;
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
     }
 
+//    public String getUserInfoFromToken(String token) throws ExpiredJwtException, JwtException{
+//        //log.info("body" + Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody());
+//        //return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("userId");
+//        return (String) parseToken(token).getBody().get("userId");
+//    }
+
     public String getUserInfoFromToken(String token){
-        log.info("body" + Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody());
-        return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("userId");
+        //log.info("body" + Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody());
+        //return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("userId");
+        return (String) parseToken(token).getBody().get("userId");
+    }
+
+    public Jws<Claims> parseToken(String jwtToken){
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
     }
 
     public Authentication getAuthentication(String token){
@@ -87,26 +111,26 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public TokenResponseDto reissueToken(TokenResponseDto tokenResponseDto, String token){
-        //do not need to reissue token
-        if(validateToken(tokenResponseDto.getACCESS_TOKEN())) {
-            throw new IllegalArgumentException();
-        }
-
-        String userIdFromToken = getUserInfoFromToken(token);
-
-        //only if access token is expired and validated
-        if(getUserInfoFromToken(tokenResponseDto.getACCESS_TOKEN()).equals(userIdFromToken)){
-            Auth authFromRepo = authRepository.findAuthByUserId(getUserInfoFromToken(userIdFromToken));
-            String refreshTokenFromRepo = authFromRepo.getRefreshToken();
-            //refresh token is validated
-            if (refreshTokenFromRepo.equals(tokenResponseDto.getREFRESH_TOKEN())){
-                String newRefreshToken = createRefreshToken(userIdFromToken);
-                authRepository.updateAuth(userIdFromToken, newRefreshToken);
-                return new TokenResponseDto(refreshTokenFromRepo, newRefreshToken);
-            }
-        }
-        return new TokenResponseDto("","");
-    }
+//    public TokenResponseDto reissueToken(TokenResponseDto tokenResponseDto, String token){
+//        //do not need to reissue token
+//        if(validateToken(tokenResponseDto.getACCESS_TOKEN())) {
+//            throw new IllegalArgumentException();
+//        }
+//
+//        String userIdFromToken = getUserInfoFromToken(token);
+//
+//        //only if access token is expired and validated
+//        if(getUserInfoFromToken(tokenResponseDto.getACCESS_TOKEN()).equals(userIdFromToken)){
+//            Auth authFromRepo = authRepository.findAuthByUserId(getUserInfoFromToken(userIdFromToken));
+//            String refreshTokenFromRepo = authFromRepo.getRefreshToken();
+//            //refresh token is validated
+//            if (refreshTokenFromRepo.equals(tokenResponseDto.getREFRESH_TOKEN())){
+//                String newRefreshToken = createRefreshToken(userIdFromToken);
+//                authRepository.updateAuth(userIdFromToken, newRefreshToken);
+//                return new TokenResponseDto(refreshTokenFromRepo, newRefreshToken);
+//            }
+//        }
+//        return new TokenResponseDto("","");
+//    }
 
 }
