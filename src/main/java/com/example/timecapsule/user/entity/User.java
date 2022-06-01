@@ -31,7 +31,7 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
-    List<Capsule> products = new ArrayList<>();
+    List<Capsule> capsules = new ArrayList<>();
     //TODO 연관관계 맵핑
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
