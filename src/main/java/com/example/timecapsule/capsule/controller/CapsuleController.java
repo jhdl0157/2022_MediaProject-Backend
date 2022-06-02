@@ -49,8 +49,9 @@ public class CapsuleController {
 
     //캡슐 디테일 확인
     @GetMapping("detail/{capsule_id}")
-    public ResponseEntity<SingleResult<SpecialCapsuleResponse>> getMyCapsule(@PathVariable Long capsule_id){
-        return new ResponseEntity<>(responseService.getSingleResult(capsuleService.getDetailCapsule(capsule_id)),HttpStatus.OK);
+    public ResponseEntity<SingleResult<SpecialCapsuleResponse>> getMyCapsule( @RequestHeader("X-AUTH-TOKEN") String accessToken,
+                                                                              @PathVariable Long capsule_id){
+        return new ResponseEntity<>(responseService.getSingleResult(capsuleService.getDetailCapsule(accessToken,capsule_id)),HttpStatus.OK);
     }
     //현재 사용자가 받은 캡슐 불러오기
     @GetMapping("/main")

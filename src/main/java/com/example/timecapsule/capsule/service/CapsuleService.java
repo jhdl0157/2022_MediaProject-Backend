@@ -5,7 +5,6 @@ import com.example.timecapsule.capsule.dto.request.LocationRequest;
 import com.example.timecapsule.capsule.dto.request.SpecialCapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
 import com.example.timecapsule.capsule.dto.response.SpecialCapsuleResponse;
-import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.capsule.entity.CapsuleInfo;
 import com.example.timecapsule.capsule.entity.Recipient;
@@ -24,9 +23,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.geom.Point2D;
-import java.io.IOException;
-import java.net.ConnectException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -90,11 +86,13 @@ public class CapsuleService {
         }
     }
 
-    public SpecialCapsuleResponse getDetailCapsule(final Long capsule_id) {
+    public SpecialCapsuleResponse getDetailCapsule(final String accessToken,final Long capsule_id) {
+        User user = userService.findUserByAccessToken(accessToken);
         Capsule capsule = capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NOTFOUNDEXCEPTION::new);
-        if (!capsule.getIsOpened())
+        if (!capsule.getIsOpened()&&capsule.getRecipient().getRecipientId().equals(user.getId())) {
             capsule.setIsOpened(true);
-        capsuleRepository.save(capsule);
+            capsuleRepository.save(capsule);
+        }
         return SpecialCapsuleResponse.toCapsuleResponse(capsule);
     }
 
