@@ -26,12 +26,11 @@ public class AnywhereCapsuleResponse {
     public static AnywhereCapsuleResponse toCapsuleResponse(Capsule capsule) {
         return AnywhereCapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
-                .content(capsule.getCapsuleContent())
-                .nickname(capsule.getNickname())
-                .recipient(capsule.getRecipient())
-                .duration(capsule.getDuration())
-                .location(capsule.getLocation())
-                .capsuleType(capsule.getCapsuleType())
+                .content(capsule.getCapsuleInfo().getCapsuleContent())
+                .nickname(capsule.getCapsuleInfo().getNickname())
+                .recipient(capsule.getRecipient().getRecipient())
+                .duration(capsule.getCapsuleInfo().getDuration())
+                .capsuleType(capsule.getCapsuleInfo().getCapsuleType())
                 .opened(capsule.getIsOpened())
                 .build();
     }

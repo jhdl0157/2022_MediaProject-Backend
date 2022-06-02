@@ -27,12 +27,12 @@ public class SpecialCapsuleResponse {
     public static SpecialCapsuleResponse toCapsuleResponse(Capsule capsule) {
         return SpecialCapsuleResponse.builder()
                 .capsuleId(capsule.getCapsuleId())
-                .content(capsule.getCapsuleContent())
-                .nickname(capsule.getNickname())
-                .recipient(capsule.getRecipient())
-                .duration(capsule.getDuration())
-                .location(capsule.getLocation())
-                .capsuleType(capsule.getCapsuleType())
+                .content(capsule.getCapsuleInfo().getCapsuleContent())
+                .nickname(capsule.getCapsuleInfo().getNickname())
+                .recipient(capsule.getRecipient().getRecipient())
+                .duration(capsule.getCapsuleInfo().getDuration())
+                .location(capsule.getCapsuleInfo().getLocation())
+                .capsuleType(capsule.getCapsuleInfo().getCapsuleType())
                 .opened(capsule.getIsOpened())
                 .build();
     }

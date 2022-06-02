@@ -5,10 +5,12 @@ import com.example.timecapsule.capsule.dto.request.LocationRequest;
 import com.example.timecapsule.capsule.dto.request.SpecialCapsuleRequest;
 import com.example.timecapsule.capsule.dto.response.ApiResponse;
 import com.example.timecapsule.capsule.dto.response.SpecialCapsuleResponse;
-import com.example.timecapsule.capsule.dto.response.OpenCapsuleResponse;
 import com.example.timecapsule.capsule.entity.Capsule;
+import com.example.timecapsule.capsule.entity.CapsuleInfo;
+import com.example.timecapsule.capsule.entity.Recipient;
 import com.example.timecapsule.capsule.repository.CapsuleRepository;
 import com.example.timecapsule.exception.NOTFOUNDEXCEPTION;
+import com.example.timecapsule.main.common.Distance;
 import com.example.timecapsule.user.entity.User;
 import com.example.timecapsule.user.repository.UserRepository;
 import com.example.timecapsule.user.service.UserService;
@@ -21,10 +23,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.geom.Point2D;
-import java.io.IOException;
-import java.net.ConnectException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,21 +37,20 @@ public class CapsuleService {
     private final UserRepository userRepository;
     private static final String RANDOM_NICKNAME_API_URL = "http://bloodgang.shop:8080/api/v1/character";
 
+
     //캡슐 등록
     public SpecialCapsuleResponse createCapsule(final String accessToken, final SpecialCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
         User recipient=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
+        Recipient recipient1=new Recipient(recipient.getUserNickname(),recipient.getId());
+        CapsuleInfo capsuleInfo=new CapsuleInfo(capsuleRequest.getContent(),capsuleRequest.getDuration(),
+                capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(),capsuleRequest.getLongitude())
+                ,capsuleRequest.getNickname(),capsuleRequest.getCapsuleType());
         Capsule capsule = Capsule.builder()
+                .capsuleInfo(capsuleInfo)
+                .recipient(recipient1)
+                .isOpend(false)
                 .user(user)
-                .capsuleContent(capsuleRequest.getContent())
-                .duration(capsuleRequest.getDuration())
-                .isOpened(false)
-                .recipient(recipient.getUserNickname())
-                .recipientId(recipient.getId())
-                .nickname(capsuleRequest.getNickname())
-                .capsuleType(capsuleRequest.getCapsuleType())
-                .senderId(user.getUserId())
-                .location(capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(), capsuleRequest.getLongitude()))
                 .build();
         capsuleRepository.save(capsule);
         return SpecialCapsuleResponse.toCapsuleResponse(capsule);
@@ -60,16 +59,14 @@ public class CapsuleService {
     public SpecialCapsuleResponse createCapsule(final String accessToken, final AnywhereCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
         User recipient=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
-        Capsule capsule = Capsule.builder()
+        Recipient recipient1=new Recipient(recipient.getUserNickname(),recipient.getId());
+        CapsuleInfo capsuleInfo=new CapsuleInfo(capsuleRequest.getContent(),capsuleRequest.getDuration()
+                ,capsuleRequest.getNickname(),capsuleRequest.getCapsuleType());
+        Capsule capsule= Capsule.builder()
+                .capsuleInfo(capsuleInfo)
+                .recipient(recipient1)
+                .isOpend(false)
                 .user(user)
-                .capsuleContent(capsuleRequest.getContent())
-                .duration(capsuleRequest.getDuration())
-                .isOpened(false)
-                .recipient(recipient.getUserNickname())
-                .recipientId(recipient.getId())
-                .nickname(capsuleRequest.getNickname())
-                .capsuleType(capsuleRequest.getCapsuleType())
-                .senderId(user.getUserId())
                 .build();
         capsuleRepository.save(capsule);
         return SpecialCapsuleResponse.toCapsuleResponse(capsule);
@@ -77,10 +74,9 @@ public class CapsuleService {
 
     public String getRandomNickname() {
         RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl = RANDOM_NICKNAME_API_URL;
         try {
-            ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
-            log.info(responseEntity.getBody().getWord().get(0));
+            ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(RANDOM_NICKNAME_API_URL, ApiResponse.class);
+            log.info(Objects.requireNonNull(responseEntity.getBody()).getWord().get(0));
             return responseEntity.getBody().getWord().get(0);
         }catch (HttpClientErrorException e){
             throw new NOTFOUNDEXCEPTION();
@@ -90,18 +86,21 @@ public class CapsuleService {
         }
     }
 
-    public SpecialCapsuleResponse getDetailCapsule(final Long capsule_id) {
+    public SpecialCapsuleResponse getDetailCapsule(final String accessToken,final Long capsule_id) {
+        User user = userService.findUserByAccessToken(accessToken);
         Capsule capsule = capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NOTFOUNDEXCEPTION::new);
-        if (!capsule.getIsOpened())
+        if (!capsule.getIsOpened()&&capsule.getRecipient().getRecipientId().equals(user.getId())) {
             capsule.setIsOpened(true);
-        capsuleRepository.save(capsule);
+            capsuleRepository.save(capsule);
+        }
         return SpecialCapsuleResponse.toCapsuleResponse(capsule);
     }
 
 
     public List<SpecialCapsuleResponse> getListCapsule(final String accessToken) {
         User user = userService.findUserByAccessToken(accessToken);
-        return capsuleRepository.findCapsulesByRecipientIdOrderByCreatedAtDesc(user.getId()).stream()
+        Recipient recipient=new Recipient(user.getUserId(),user.getId());
+        return capsuleRepository.findCapsulesByRecipient_RecipientIdOrderByCreatedAtDesc(user.getId()).stream()
                 .map(SpecialCapsuleResponse::toCapsuleResponse)
                 .collect(Collectors.toList());
     }
@@ -127,24 +126,6 @@ public class CapsuleService {
 
     public Boolean check(LocationRequest locationRequest) {
         Capsule capsule=capsuleRepository.findById(locationRequest.getCapsuleId()).orElseThrow(NOTFOUNDEXCEPTION::new);
-        double distance=distance(locationRequest.getLatitude(),locationRequest.getLongitude(),capsule.getLocation().getX(),capsule.getLocation().getY());
-        if(distance<=300.0) return true;
-        return false;
-    }
-
-    private static double distance(double lat1, double lon1, double lat2, double lon2) {
-
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        return (dist * 60 * 1.1515*1609.344);
-    }
-    private static double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-    private static double rad2deg(double rad) {
-        return (rad * 180 / Math.PI);
+        return Distance.isOpenable(locationRequest,capsule.getCapsuleInfo());
     }
 }
