@@ -28,6 +28,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,10 +78,9 @@ public class CapsuleService {
 
     public String getRandomNickname() {
         RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl = RANDOM_NICKNAME_API_URL;
         try {
-            ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(fooResourceUrl, ApiResponse.class);
-            log.info(responseEntity.getBody().getWord().get(0));
+            ResponseEntity<ApiResponse> responseEntity = restTemplate.getForEntity(RANDOM_NICKNAME_API_URL, ApiResponse.class);
+            log.info(Objects.requireNonNull(responseEntity.getBody()).getWord().get(0));
             return responseEntity.getBody().getWord().get(0);
         }catch (HttpClientErrorException e){
             throw new NOTFOUNDEXCEPTION();
