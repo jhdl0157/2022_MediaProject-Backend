@@ -26,6 +26,7 @@ public class Capsule extends BaseEntity {
     private CapsuleInfo capsuleInfo;
     @Embedded
     private Recipient recipient;
+    private String senderId;
     private Boolean isOpened;
 
     @JsonIgnore
@@ -34,16 +35,25 @@ public class Capsule extends BaseEntity {
     public User user;
 
     @Builder
-    public Capsule(CapsuleInfo capsuleInfo, Recipient recipient, User user) {
+    public Capsule(CapsuleInfo capsuleInfo, Recipient recipient, User user,Boolean isOpend) {
         setCapsuleInfo(capsuleInfo);
         setRecipient(recipient);
+        setOpened(isOpend);
         setUser(user);
+        setSenderId(user.getUserId());
+    }
+    public void setSenderId(String userId){
+        senderId=userId;
+    }
+    public void setOpened(Boolean opened) {
+        isOpened = opened;
     }
 
     private void setCapsuleInfo(CapsuleInfo capsuleInfo) {
         if (capsuleInfo == null) throw new NullPointerException();
         this.capsuleInfo = capsuleInfo;
     }
+
 
     private void setRecipient(Recipient recipient) {
         if (recipient == null) throw new NullPointerException();

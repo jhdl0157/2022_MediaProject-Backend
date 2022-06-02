@@ -28,6 +28,25 @@ public class CapsuleInfo {
         this.nickname = nickname;
         this.capsuleType = capsuleType;
     }
+    public void setCapsuleContent(String capsuleContent) {
+        this.capsuleContent = capsuleContent;
+    }
+
+    public void setDuration(LocalDateTime duration) {
+        this.duration = duration;
+    }
+
+    public void setLocation(Point2D.Double location) {
+        this.location = location;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setCapsuleType(Byte capsuleType) {
+        this.capsuleType = capsuleType;
+    }
 
     public String getCapsuleContent() {
         return capsuleContent;

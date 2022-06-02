@@ -45,7 +45,14 @@ public class CapsuleService {
     public SpecialCapsuleResponse createCapsule(final String accessToken, final SpecialCapsuleRequest capsuleRequest) {
         User user = userService.findUserByAccessToken(accessToken);
         User recipient=userRepository.findById(capsuleRequest.getRecipient()).orElseThrow(NOTFOUNDEXCEPTION::new);
+        Recipient recipient1=new Recipient(recipient.getUserNickname(),recipient.getId());
+        CapsuleInfo capsuleInfo=new CapsuleInfo(capsuleRequest.getContent(),capsuleRequest.getDuration(),
+                capsuleRequest.setLocationFunc(capsuleRequest.getLatitude(),capsuleRequest.getLongitude())
+                ,capsuleRequest.getNickname(),capsuleRequest.getCapsuleType());
         Capsule capsule = Capsule.builder()
+                .capsuleInfo(capsuleInfo)
+                .recipient(recipient1)
+                .isOpend(false)
                 .user(user)
                 .build();
         capsuleRepository.save(capsule);
@@ -61,7 +68,7 @@ public class CapsuleService {
         Capsule capsule= Capsule.builder()
                 .capsuleInfo(capsuleInfo)
                 .recipient(recipient1)
-                .isOpened(false)
+                .isOpend(false)
                 .user(user)
                 .build();
         capsuleRepository.save(capsule);
@@ -94,7 +101,8 @@ public class CapsuleService {
 
     public List<SpecialCapsuleResponse> getListCapsule(final String accessToken) {
         User user = userService.findUserByAccessToken(accessToken);
-        return capsuleRepository.findCapsulesByRecipientIdOrderByCreatedAtDesc(user.getId()).stream()
+        Recipient recipient=new Recipient(user.getUserId(),user.getId());
+        return capsuleRepository.findCapsulesByRecipient_RecipientIdOrderByCreatedAtDesc(user.getId()).stream()
                 .map(SpecialCapsuleResponse::toCapsuleResponse)
                 .collect(Collectors.toList());
     }
