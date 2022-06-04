@@ -32,6 +32,11 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     List<Capsule> capsules = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auth_id")
+    Auth auth;
+
     //TODO 연관관계 맵핑
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

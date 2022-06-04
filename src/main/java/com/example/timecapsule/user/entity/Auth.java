@@ -1,16 +1,14 @@
 package com.example.timecapsule.user.entity;
 
 import com.example.timecapsule.config.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @AllArgsConstructor
 @Builder
+@Setter
 @Entity
 @NoArgsConstructor
 public class Auth extends BaseEntity  {

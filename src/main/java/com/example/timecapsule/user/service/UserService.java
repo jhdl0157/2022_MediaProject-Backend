@@ -1,6 +1,7 @@
 package com.example.timecapsule.user.service;
 
 
+import com.example.timecapsule.config.SecurityUtil;
 import com.example.timecapsule.user.dto.response.KakaoResponse;
 import com.example.timecapsule.exception.*;
 import com.example.timecapsule.user.dto.response.TokenResponseDto;
@@ -66,14 +67,15 @@ public class UserService {
 
         return issueToken(user.getUserId());
     }
+
+    @Transactional
     public TokenResponseDto issueToken(final String userid){
         String accessToken = jwtTokenProvider.createAccessToken(userid);
         String refreshToken = jwtTokenProvider.createRefreshToken(userid);
-
         Auth authFromRepository = authRepository.findAuthByUserId(userid);
-        
+        User userFromRepository = userRepository.findUserByUserId(userid).orElseThrow(IDEXCEPTION::new);
         if (authFromRepository != null) {
-            authRepository.updateAuth(userid, refreshToken);
+            authFromRepository.setRefreshToken(refreshToken);
         }
         else{
             Auth auth = Auth.builder()
@@ -81,9 +83,10 @@ public class UserService {
                     .refreshToken(refreshToken)
                     .build();
             authRepository.save(auth);
+            userFromRepository.setAuth(auth);
         }
 
-        User userFromRepository = userRepository.findUserByUserId(userid).orElseThrow(IDEXCEPTION::new);
+        userRepository.save(userFromRepository);
 
         return TokenResponseDto.builder()
                 .userId(userFromRepository.getId())
@@ -118,6 +121,10 @@ public class UserService {
 
     public void logout(String userId){
         //token 무효화
+    }
+    private User getCurrentMember() {
+        return userRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(NOTFOUNDEXCEPTION::new);
     }
 
 }
