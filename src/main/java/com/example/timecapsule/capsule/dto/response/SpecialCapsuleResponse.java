@@ -1,9 +1,6 @@
 package com.example.timecapsule.capsule.dto.response;
 
 import com.example.timecapsule.capsule.entity.Capsule;
-import com.example.timecapsule.capsule.repository.CapsuleRepository;
-import com.example.timecapsule.user.entity.User;
-import com.example.timecapsule.user.repository.UserRepository;
 import lombok.*;
 
 import java.awt.geom.Point2D;
@@ -29,7 +26,7 @@ public class SpecialCapsuleResponse {
                 .capsuleId(capsule.getCapsuleId())
                 .content(capsule.getCapsuleInfo().getCapsuleContent())
                 .nickname(capsule.getCapsuleInfo().getNickname())
-                .recipient(capsule.getRecipient().getRecipient())
+                .recipient(capsule.getRecipient().getRecipientNickname())
                 .duration(capsule.getCapsuleInfo().getDuration())
                 .location(capsule.getCapsuleInfo().getLocation())
                 .capsuleType(capsule.getCapsuleInfo().getCapsuleType())

@@ -4,24 +4,24 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Recipient {
-    private String recipient;
+    private String recipientNickname;
 
     private Long recipientId;
     public Recipient() {}
-    public Recipient(String recipient, Long recipientId) {
-        this.recipient = recipient;
+    public Recipient(String recipientNickname, Long recipientId) {
+        this.recipientNickname = recipientNickname;
         this.recipientId = recipientId;
     }
 
-    public String getRecipient() {
-        return recipient;
+    public String getRecipientNickname() {
+        return recipientNickname;
     }
 
     public Long getRecipientId() {
         return recipientId;
     }
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public void setRecipientNickname(String recipient) {
+        this.recipientNickname = recipient;
     }
 
     public void setRecipientId(Long recipientId) {

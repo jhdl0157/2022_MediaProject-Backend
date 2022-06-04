@@ -16,13 +16,13 @@ import com.example.timecapsule.user.repository.UserRepository;
 import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -105,16 +105,15 @@ public class CapsuleService {
                 .collect(Collectors.toList());
     }
 
-    public int deleteCapsule(final Long capsuleId, final String accessToken) {
+    public boolean deleteCapsule(final Long capsuleId, final String accessToken) {
         Capsule nowCapsule = capsuleRepository.findById(capsuleId).orElseThrow(NOTFOUNDEXCEPTION::new);
         User nowuser = userService.findUserByAccessToken(accessToken);
-        if (nowCapsule.getRecipient().equals(nowuser.getUserId())) {
+        if (nowCapsule.getRecipient().getRecipientNickname().equals(nowuser.getUserId())) {
             capsuleRepository.deleteById(capsuleId);
             //TODO 분기 다시 생각하기
-            return 200;
+            return true;
         }
-        return 401;
-
+        return false;
     }
 
     public List<SpecialCapsuleResponse> OpenedCapsule(final String accessToken) {

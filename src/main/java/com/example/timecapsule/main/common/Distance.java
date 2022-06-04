@@ -28,8 +28,8 @@ public class Distance {
     public static boolean isOpenable(LocationRequest locationRequest, CapsuleInfo capsuleInfo) {
         double distance = distance(
                 locationRequest.getLongitude(), locationRequest.getLatitude(),
-                capsuleInfo.getLocation().x, capsuleInfo.getLocation().y
+                capsuleInfo.getLocation().getX(), capsuleInfo.getLocation().getY()
         );
-        return distance <= OPENABLE_DISTANCE ? true : false;
+        return distance <= OPENABLE_DISTANCE;
     }
 }

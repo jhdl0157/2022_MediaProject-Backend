@@ -28,7 +28,7 @@ public class AnywhereCapsuleResponse {
                 .capsuleId(capsule.getCapsuleId())
                 .content(capsule.getCapsuleInfo().getCapsuleContent())
                 .nickname(capsule.getCapsuleInfo().getNickname())
-                .recipient(capsule.getRecipient().getRecipient())
+                .recipient(capsule.getRecipient().getRecipientNickname())
                 .duration(capsule.getCapsuleInfo().getDuration())
                 .capsuleType(capsule.getCapsuleInfo().getCapsuleType())
                 .opened(capsule.getIsOpened())

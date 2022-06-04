@@ -24,11 +24,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
     private final JwtTokenProvider jwtTokenProvider;
+    public static final String AUTHORIZATION_HEADER = "X-AUTH-TOKEN";
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException{
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
-        String tokenFromHeader = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        String tokenFromHeader = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
         log.info("TOKEN FROM HEADER:" + tokenFromHeader);
 
         //토큰 유효
