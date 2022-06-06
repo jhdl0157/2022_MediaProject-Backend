@@ -90,7 +90,7 @@ public class CapsuleService {
         User user = userService.findUserByAccessToken(accessToken);
         Capsule capsule = capsuleRepository.findCapsuleByCapsuleId(capsule_id).orElseThrow(NOTFOUNDEXCEPTION::new);
         if (!capsule.getIsOpened()&&capsule.getRecipient().getRecipientId().equals(user.getId())) {
-            capsule.setIsOpened(true);
+            capsule.setOpened(true);
             capsuleRepository.save(capsule);
         }
         return SpecialCapsuleResponse.toCapsuleResponse(capsule);

@@ -15,7 +15,6 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
 //TODO SET 사용 자제
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Capsule extends BaseEntity {
@@ -46,7 +45,7 @@ public class Capsule extends BaseEntity {
         senderId=userId;
     }
     public void setOpened(Boolean opened) {
-        isOpened = opened;
+        this.isOpened = opened;
     }
 
     private void setCapsuleInfo(CapsuleInfo capsuleInfo) {

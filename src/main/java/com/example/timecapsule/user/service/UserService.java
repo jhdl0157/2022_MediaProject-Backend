@@ -31,6 +31,7 @@ public class UserService {
     private final AuthRepository authRepository;
     private final PasswordEncoder passwordEncoder;
 
+
     public UserResponseDto register(UserRequestDto userRequestDto) {
         User user = UserResponseDto.of(userRequestDto, passwordEncoder.encode(userRequestDto.getUserPw()));
         userRepository.save(user);
