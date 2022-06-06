@@ -100,7 +100,7 @@ public class CapsuleService {
     public List<SpecialCapsuleResponse> getListCapsule(final String accessToken) {
         User user = userService.findUserByAccessToken(accessToken);
         Recipient recipient=new Recipient(user.getUserId(),user.getId());
-        return capsuleRepository.findCapsulesByRecipient_RecipientIdOrderByCreatedAtDesc(user.getId()).stream()
+        return capsuleRepository.findCapsulesByRecipient_RecipientIdOrderByCreatedAtDesc(recipient.getRecipientId()).stream()
                 .map(SpecialCapsuleResponse::toCapsuleResponse)
                 .collect(Collectors.toList());
     }
