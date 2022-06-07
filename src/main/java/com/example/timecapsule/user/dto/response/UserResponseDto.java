@@ -21,6 +21,7 @@ public class UserResponseDto {
                 .userPw(password)
                 .userNickname(userRequestDto.getUserNickname())
                 .userEmail(userRequestDto.getUserEmail())
+                .userSearchEnabled(userRequestDto.isUserSearchEnabled())
                 .build();
     }
     public static UserResponseDto toUserResponse (User user){

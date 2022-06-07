@@ -26,7 +26,7 @@ public class SearchController {
 
     @GetMapping("/api/search")
     public ResponseEntity<ListResult<UserSearchResponseDto>> getUsersByNicknameKeyword(@RequestParam String keyword){
-        return new ResponseEntity<>(responseService.getListResult(searchService.searchNickname(keyword)), HttpStatus.OK);
+        return new ResponseEntity<>(responseService.getListResult(searchService.getAllUsersWithKeyword(keyword)), HttpStatus.OK);
     }
 
 }

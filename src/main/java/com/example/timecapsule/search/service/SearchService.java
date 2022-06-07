@@ -18,10 +18,11 @@ public class SearchService {
     private final UserRepository userRepository;
 
     public List<UserSearchResponseDto> getAllUsersWithKeyword(String keyword){
-        List<User> allUserWithKeyword = userRepository.findByUserNicknameContaining(keyword);
+        List<User> allUserWithKeyword = userRepository.findByUserNicknameContainsIgnoreCase(keyword.replace(" ",""));
         List<UserSearchResponseDto> returnList = new ArrayList<>();
         for (User user : allUserWithKeyword){
-            if (user.getUserNickname().contains(keyword)) {
+            log.info(user.toString());
+            if (user.getUserNickname().contains(keyword) && user.isUserSearchEnabled()) {
                 returnList.add(UserSearchResponseDto.toUserSearchResponseDto(user));
             }
         }
