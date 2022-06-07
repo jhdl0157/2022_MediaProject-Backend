@@ -49,7 +49,7 @@ public class CapsuleService {
         Capsule capsule = Capsule.builder()
                 .capsuleInfo(capsuleInfo)
                 .recipient(recipient1)
-                .isOpend(false)
+                .isOpened(false)
                 .user(user)
                 .build();
         capsuleRepository.save(capsule);
@@ -65,7 +65,7 @@ public class CapsuleService {
         Capsule capsule= Capsule.builder()
                 .capsuleInfo(capsuleInfo)
                 .recipient(recipient1)
-                .isOpend(false)
+                .isOpened(false)
                 .user(user)
                 .build();
         capsuleRepository.save(capsule);
