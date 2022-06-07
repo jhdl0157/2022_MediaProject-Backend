@@ -34,10 +34,10 @@ public class Capsule extends BaseEntity {
     public User user;
 
     @Builder
-    public Capsule(CapsuleInfo capsuleInfo, Recipient recipient, User user,Boolean isOpend) {
+    public Capsule(CapsuleInfo capsuleInfo, Recipient recipient, User user,Boolean isOpened) {
         setCapsuleInfo(capsuleInfo);
         setRecipient(recipient);
-        setOpened(isOpend);
+        setOpened(isOpened);
         setUser(user);
         setSenderId(user.getUserId());
     }

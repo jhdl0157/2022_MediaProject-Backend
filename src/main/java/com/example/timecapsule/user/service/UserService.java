@@ -48,23 +48,22 @@ public class UserService {
 
     public void isUserIdDuplicated(String userId) {
         log.info("UserService.isUserIdDuplicated");
-        if (userRepository.findUserByUserId(userId).isPresent()) {
+        if (userRepository.existsByUserId(userId)) {
             throw new DUPLICATEDATEXCEPTION();
         }
     }
 
     public void isUserNicknameDuplicated(String userNickname) {
-        if (userRepository.findUserByUserNickname(userNickname).isPresent()) {
+        if (userRepository.existsByUserNickname(userNickname)) {
             throw new DUPLICATEDATEXCEPTION();
         }
     }
 
-    public TokenResponseDto login(UserRequestDto userRequestDto) throws Exception {
+    public TokenResponseDto login(UserRequestDto userRequestDto) {
         User user = userRepository.findUserByUserId(userRequestDto.getUserId()).orElseThrow(IDEXCEPTION::new);
         if (!passwordEncoder.matches(userRequestDto.getUserPw(), user.getUserPw())) {
             throw new PASSWORDEXCEPTION();
         }
-
         return issueToken(user.getUserId());
     }
     public TokenResponseDto issueToken(final String userid){
@@ -102,6 +101,7 @@ public class UserService {
         return userRepository.findUserByUserId(jwtTokenProvider.getUserInfoFromToken(accessToken)).orElseThrow(NOTFOUNDEXCEPTION::new);
     }
 
+    @Transactional(readOnly = true)
     public User findUserByUserEmail(String email) {
         return userRepository.findUserByUserEmail(email).orElse(null);
     }
@@ -110,15 +110,20 @@ public class UserService {
         //TODO 자바는 카멜케이스 명명규칙
         User nowuser = findUserByAccessToken(accessToken);
         //TODO 이런 분기는 좋지 않음 최대한 ifelse를 없애기
-        if (nowuser.getId().equals(userId)) {
-            userRepository.deleteById(userId);
-        } else {
+        if (!nowuser.getId().equals(userId)) {
             throw new IDEXCEPTION();
         }
+        userRepository.deleteById(userId);
     }
 
     public void logout(String userId){
         //token 무효화
+    }
+    @Transactional
+    public void changeNickname(String accessToken,String userNickname) {
+        User user=findUserByAccessToken(accessToken);
+        isUserNicknameDuplicated(userNickname);
+        user.changeName(userNickname);
     }
 
 }

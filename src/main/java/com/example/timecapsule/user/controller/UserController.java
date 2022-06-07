@@ -68,5 +68,10 @@ public class UserController {
         userService.deleteUser(user_id,accessToken);
         return new ResponseEntity<>(responseService.getSuccessResult(), HttpStatus.OK);
     }
+    @PatchMapping("/nickname")
+    public ResponseEntity<CommonResult> updateNickname(@RequestHeader("X-AUTH-TOKEN")String accessToken,@RequestParam String userNickname){
+        userService.changeNickname(accessToken,userNickname);
+        return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
+    }
 
 }
