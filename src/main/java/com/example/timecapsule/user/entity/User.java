@@ -5,6 +5,7 @@ import com.example.timecapsule.capsule.entity.Capsule;
 import com.example.timecapsule.config.BaseEntity;
 import com.example.timecapsule.user.dto.request.UserRequestDto;
 import com.example.timecapsule.user.dto.response.UserResponseDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,7 +29,7 @@ public class User extends BaseEntity implements UserDetails {
     private String userPw;
     private String userNickname;
     private String userEmail;
-
+    private boolean userSearchEnabled;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     List<Capsule> capsules = new ArrayList<>();
