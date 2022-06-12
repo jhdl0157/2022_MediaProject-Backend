@@ -87,6 +87,7 @@ public class UserService {
 
         return TokenResponseDto.builder()
                 .userId(userFromRepository.getId())
+                .userEmail(userFromRepository.getUserEmail())
                 .userNickname(userFromRepository.getUserNickname())
                 .ACCESS_TOKEN(accessToken)
                 .REFRESH_TOKEN(refreshToken)
