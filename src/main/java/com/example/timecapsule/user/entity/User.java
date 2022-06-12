@@ -70,4 +70,7 @@ public class User extends BaseEntity implements UserDetails {
     public void changeName(String changeName){
         this.userNickname=changeName;
     }
+    public void changeUserSearchAble(){
+        this.userSearchEnabled=!this.userSearchEnabled;
+    }
 }
