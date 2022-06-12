@@ -7,6 +7,7 @@ import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,21 +32,18 @@ public class SearchService {
         return returnList;
     }
     //Stream 사용
+    @Transactional(readOnly = true)
     public List<UserSearchResponseDto> searchNickname(String keyword){
         log.info("Search Service: searchNickname success");
-        return userRepository.findByUserNicknameContainsIgnoreCase(keyword.replace(" ","")).stream().map(UserSearchResponseDto::toUserSearchResponseDto).collect(Collectors.toList());
+        return userRepository.findByUserNicknameContainsIgnoreCase(keyword.replace(" ","")).stream()
+                .filter(User::isUserSearchEnabled)
+                .map(UserSearchResponseDto::toUserSearchResponseDto)
+                .collect(Collectors.toList());
     }
-
-    public User getUserSearchEnabled(final String accessToken, Integer enabled){
+    @Transactional
+    public void getUserSearchEnabled(final String accessToken){
         User userFromToken = userService.findUserByAccessToken(accessToken);
-        User userFromRepo = userRepository.findUserByUserId(userFromToken.getUserId()).get();
-
-        if (enabled.equals(1)){
-            userFromRepo.setUserSearchEnabled(true);
-        }else{
-            userFromRepo.setUserSearchEnabled(false);
-        }
-        return userRepository.save(userFromRepo);
+        userFromToken.changeUserSearchAble();
     }
 
 }

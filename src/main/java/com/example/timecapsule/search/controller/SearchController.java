@@ -19,18 +19,19 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/api/search")
 public class SearchController {
     private final SearchService searchService;
     private final ResponseService responseService;
 
-    @GetMapping("/api/search")
+    @GetMapping()
     public ResponseEntity<ListResult<UserSearchResponseDto>> getUsersByNicknameKeyword(@RequestParam String keyword){
-        return new ResponseEntity<>(responseService.getListResult(searchService.getAllUsersWithKeyword(keyword)), HttpStatus.OK);
+        return new ResponseEntity<>(responseService.getListResult(searchService.searchNickname(keyword)), HttpStatus.OK);
     }
 
-    @GetMapping("/api/search/enabled")
-    public ResponseEntity<CommonResult> getUserSearchEnabled(@RequestHeader("X-AUTH-TOKEN") String accessToken, @RequestParam Integer enabled){
-        searchService.getUserSearchEnabled(accessToken, enabled);
+    @GetMapping("/enabled")
+    public ResponseEntity<CommonResult> getUserSearchEnabled(@RequestHeader("X-AUTH-TOKEN") String accessToken){
+        searchService.getUserSearchEnabled(accessToken);
         return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
     }
 
