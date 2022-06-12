@@ -3,6 +3,7 @@ package com.example.timecapsule.search.service;
 import com.example.timecapsule.search.dto.UserSearchResponseDto;
 import com.example.timecapsule.user.entity.User;
 import com.example.timecapsule.user.repository.UserRepository;
+import com.example.timecapsule.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class SearchService {
     private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<UserSearchResponseDto> getAllUsersWithKeyword(String keyword){
         List<User> allUserWithKeyword = userRepository.findByUserNicknameContainsIgnoreCase(keyword.replace(" ",""));
@@ -32,6 +34,18 @@ public class SearchService {
     public List<UserSearchResponseDto> searchNickname(String keyword){
         log.info("Search Service: searchNickname success");
         return userRepository.findByUserNicknameContainsIgnoreCase(keyword.replace(" ","")).stream().map(UserSearchResponseDto::toUserSearchResponseDto).collect(Collectors.toList());
+    }
+
+    public User getUserSearchEnabled(final String accessToken, Integer enabled){
+        User userFromToken = userService.findUserByAccessToken(accessToken);
+        User userFromRepo = userRepository.findUserByUserId(userFromToken.getUserId()).get();
+
+        if (enabled.equals(1)){
+            userFromRepo.setUserSearchEnabled(true);
+        }else{
+            userFromRepo.setUserSearchEnabled(false);
+        }
+        return userRepository.save(userFromRepo);
     }
 
 }
