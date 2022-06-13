@@ -29,7 +29,7 @@ public class SearchController {
         return new ResponseEntity<>(responseService.getListResult(searchService.searchNickname(keyword)), HttpStatus.OK);
     }
 
-    @GetMapping("/enabled")
+    @PatchMapping("/enabled")
     public ResponseEntity<CommonResult> getUserSearchEnabled(@RequestHeader("X-AUTH-TOKEN") String accessToken){
         searchService.getUserSearchEnabled(accessToken);
         return new ResponseEntity<>(responseService.getSuccessResult(),HttpStatus.OK);
